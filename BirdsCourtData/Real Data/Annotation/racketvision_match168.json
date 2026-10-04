@@ -1,0 +1,102 @@
+{
+  "source": "manual_annotation_birdscourt_tool",
+  "points": {
+    "P1_TL": [
+      709.5,
+      406.7
+    ],
+    "P2_BL": [
+      433.1,
+      963.1
+    ],
+    "P3_BR": [
+      1498.8,
+      968.2
+    ],
+    "P4_TR": [
+      1219.1,
+      407.5
+    ],
+    "P5_singlesTL": [
+      747.8,
+      406.8
+    ],
+    "P6_singlesBL": [
+      513,
+      963.5
+    ],
+    "P7_singlesBR": [
+      1418,
+      967.8
+    ],
+    "P8_singlesTR": [
+      1180.6,
+      407.4
+    ],
+    "P9_serviceFarL": [
+      652.4,
+      521.6
+    ],
+    "P10_serviceFarR": [
+      1276.7,
+      523
+    ],
+    "P11_serviceNearL": [
+      580.1,
+      667.2
+    ],
+    "P12_serviceNearR": [
+      1349.8,
+      669.6
+    ],
+    "P13_serviceFarCenter": [
+      964,
+      522.3
+    ],
+    "P14_serviceNearCenter": [
+      964.1,
+      668.4
+    ],
+    "P15_netL": [
+      620,
+      586.9
+    ],
+    "P16_netR": [
+      1309.5,
+      588.7
+    ],
+    "poleL_top": [
+      612.2,
+      420.3
+    ],
+    "poleR_top": [
+      1317.5,
+      420.4
+    ],
+    "P17_singlesFarL": [
+      701.8,
+      422.3
+    ],
+    "P18_singlesFarR": [
+      1226.9,
+      423.1
+    ],
+    "P19_singlesNearL": [
+      463.9,
+      901.1
+    ],
+    "P20_singlesNearR": [
+      1467.5,
+      905.5
+    ],
+    "P21_baseFarCenter": [
+      963.9,
+      407.1
+    ],
+    "P22_baseNearCenter": [
+      964.3,
+      965.6
+    ]
+  },
+  "verified": true
+}

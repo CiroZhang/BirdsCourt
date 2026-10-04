@@ -1,0 +1,33 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model weights / large checkpoints / caches (track via release assets or a
+# model registry, not git -- these get large fast and don't diff usefully)
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+*.onnx
+*.h5
+__pycache__/
+.cache/
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Logs / local scratch
+*.log
+.ipynb_checkpoints

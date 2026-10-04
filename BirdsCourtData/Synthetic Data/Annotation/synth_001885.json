@@ -1,0 +1,85 @@
+{
+  "source": "synthetic",
+  "points": {
+    "P2_BL": [
+      135.4,
+      331.9
+    ],
+    "P4_TR": [
+      1148.5,
+      388.4
+    ],
+    "P6_singlesBL": [
+      151.9,
+      304.3
+    ],
+    "P7_singlesBR": [
+      329.3,
+      7.8
+    ],
+    "P8_singlesTR": [
+      1135.6,
+      416.5
+    ],
+    "P9_serviceFarL": [
+      664.3,
+      616.1
+    ],
+    "P10_serviceFarR": [
+      855.1,
+      240.4
+    ],
+    "P11_serviceNearL": [
+      418.0,
+      483.8
+    ],
+    "P12_serviceNearR": [
+      617.6,
+      120.5
+    ],
+    "P13_serviceFarCenter": [
+      762.1,
+      423.6
+    ],
+    "P14_serviceNearCenter": [
+      520.2,
+      297.7
+    ],
+    "P15_netL": [
+      539.9,
+      549.3
+    ],
+    "P16_netR": [
+      735.2,
+      179.9
+    ],
+    "poleL_top": [
+      526.6,
+      559.2
+    ],
+    "poleR_top": [
+      747.2,
+      142.7
+    ],
+    "P18_singlesFarR": [
+      1100.4,
+      364.1
+    ],
+    "P19_singlesNearL": [
+      180.1,
+      355.9
+    ],
+    "P20_singlesNearR": [
+      387.6,
+      4.5
+    ],
+    "P21_baseFarCenter": [
+      1061.0,
+      579.1
+    ],
+    "P22_baseNearCenter": [
+      242.4,
+      153.0
+    ]
+  }
+}

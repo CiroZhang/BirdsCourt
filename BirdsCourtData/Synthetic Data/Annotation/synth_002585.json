@@ -1,0 +1,29 @@
+{
+  "source": "synthetic",
+  "points": {
+    "P9_serviceFarL": [
+      368.4,
+      179.1
+    ],
+    "P11_serviceNearL": [
+      847.8,
+      165.8
+    ],
+    "P13_serviceFarCenter": [
+      284.4,
+      382.0
+    ],
+    "P14_serviceNearCenter": [
+      979.2,
+      354.0
+    ],
+    "P15_netL": [
+      612.1,
+      172.3
+    ],
+    "poleR_top": [
+      739.5,
+      497.4
+    ]
+  }
+}

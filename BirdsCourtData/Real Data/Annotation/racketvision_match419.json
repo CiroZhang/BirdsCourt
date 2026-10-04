@@ -1,0 +1,102 @@
+{
+  "source": "monotrack_auto_detected",
+  "points": {
+    "P1_TL": [
+      616.6,
+      363.8
+    ],
+    "P2_BL": [
+      429.2,
+      1007.9
+    ],
+    "P3_BR": [
+      1488.4,
+      1002.4
+    ],
+    "P4_TR": [
+      1302.1,
+      361.5
+    ],
+    "P5_singlesTL": [
+      668.4,
+      363.6
+    ],
+    "P6_singlesBL": [
+      509.3,
+      1007.5
+    ],
+    "P7_singlesBR": [
+      1408.8,
+      1002.8
+    ],
+    "P8_singlesTR": [
+      1250.5,
+      361.7
+    ],
+    "P9_serviceFarL": [
+      567.9,
+      531.3
+    ],
+    "P10_serviceFarR": [
+      1350.6,
+      528.3
+    ],
+    "P11_serviceNearL": [
+      514.8,
+      713.7
+    ],
+    "P12_serviceNearR": [
+      1403.4,
+      709.8
+    ],
+    "P13_serviceFarCenter": [
+      959.7,
+      529.8
+    ],
+    "P14_serviceNearCenter": [
+      959.7,
+      711.7
+    ],
+    "P15_netL": [
+      543.0,
+      616.8
+    ],
+    "P16_netR": [
+      1375.4,
+      613.4
+    ],
+    "P17_singlesFarL": [
+      609.6,
+      387.9
+    ],
+    "P18_singlesFarR": [
+      1309.1,
+      385.5
+    ],
+    "P19_singlesNearL": [
+      445.2,
+      953.2
+    ],
+    "P20_singlesNearR": [
+      1472.6,
+      948.0
+    ],
+    "P21_baseFarCenter": [
+      959.7,
+      362.6
+    ],
+    "P22_baseNearCenter": [
+      959.6,
+      1005.2
+    ],
+    "poleL_top": [
+      541.7,
+      417.6
+    ],
+    "poleR_top": [
+      1374.0,
+      412.2
+    ]
+  },
+  "verified": true
+}

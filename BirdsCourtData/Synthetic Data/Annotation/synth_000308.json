@@ -1,0 +1,21 @@
+{
+  "source": "synthetic",
+  "points": {
+    "P10_serviceFarR": [
+      1134.9,
+      220.3
+    ],
+    "P12_serviceNearR": [
+      449.1,
+      245.6
+    ],
+    "P14_serviceNearCenter": [
+      387.4,
+      641.5
+    ],
+    "P16_netR": [
+      800.6,
+      232.6
+    ]
+  }
+}

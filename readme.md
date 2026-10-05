@@ -72,9 +72,6 @@ all), net position is handled separately in stage 3.
 
 ### 2. Candidate selection
 
-**Classical** — take MonoTrack's highest-scoring candidate by pixel overlap
-(net-free score).
-
 **Learned reranker** (`reranker.py`), used when `weights/` has a checkpoint.
 For every candidate in the pool:
 

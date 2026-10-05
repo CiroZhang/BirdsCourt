@@ -2,11 +2,13 @@
 
 Court-line and net-position detection for a single badminton photo. Given one
 image, returns 22 court-line points plus 4 net points (two net-top endpoints,
-two pole tops) in pixel coordinates.
+two pole tops) in pixel coordinates. This project introduces 3 contributions: 
 
-We build on MonoTrack's classical candidate-generation detector and improve
-the part that picks a winner from its candidate pool, then add a separate
-net-reprojection step since MonoTrack's own net-pixel detection is unreliable.
+1. A learned reranker that improves Monotrack's court-line candidate selection. 
+2.  Net localization by geometric projection, avoiding unreliable direct net detection.
+3. The annotated real and synthetic data pipeline, which supports training and evaluation.
+
+All data, weight, code and outputs used to train and evaluate the model is all publicly available in this repository
 
 ## Running it
 
@@ -43,8 +45,7 @@ badminton photos, each with:
 - `Annotation/` — hand-verified ground truth: 22 court-line points plus 4 net
   points, a `source` tag, and a `verified` flag
 - `Thumbnell/` — a small preview used by our annotation tool
-- `VGGT Outputs/` — a cached VGGT monocular-depth pass per image (horizontal
-  FOV estimate plus per-candidate planarity and confidence), computed once so
+- `VGGT Outputs/` — a cached VGGT monocular-depth pass per image, computed once so
   anyone without a GPU can still run net calibration with the VGGT hint
 
 **Synthetic Data** (`BirdsCourtData/Synthetic Data/`) — 2,963 rendered court
@@ -69,9 +70,6 @@ internal scoring (net pixels aren't used to build or score candidates at
 all), net position is handled separately in stage 3.
 
 ### 2. Candidate selection
-
-**Classical** — take MonoTrack's highest-scoring candidate by pixel overlap
-(net-free score).
 
 **Learned reranker** (`reranker.py`), used when `weights/` has a checkpoint.
 For every candidate in the pool:

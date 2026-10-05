@@ -131,3 +131,10 @@ trains the shipped checkpoint on all of it combined, with no held-out fold.
 - `Model/` — the deployable pipeline (see above)
 - `BirdsCourtData/` — the dataset (see above)
 - `Results/` — qualitative comparison figures
+
+## Reproducing the reported numbers
+
+`Model/REPRODUCE.md` maps every accuracy number in the paper to the exact
+script, data split, and saved artifact that produced it — the reranker's
+grouped-by-source-photo crossval split, the net-calibration validation, and
+the training run behind the shipped `Model/weights/` checkpoint.

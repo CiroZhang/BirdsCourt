@@ -45,8 +45,7 @@ badminton photos, each with:
 - `Annotation/` — hand-verified ground truth: 22 court-line points plus 4 net
   points, a `source` tag, and a `verified` flag
 - `Thumbnell/` — a small preview used by our annotation tool
-- `VGGT Outputs/` — a cached VGGT monocular-depth pass per image (horizontal
-  FOV estimate plus per-candidate planarity and confidence), computed once so
+- `VGGT Outputs/` — a cached VGGT monocular-depth pass per image, computed once so
   anyone without a GPU can still run net calibration with the VGGT hint
 
 **Synthetic Data** (`BirdsCourtData/Synthetic Data/`) — 2,963 rendered court

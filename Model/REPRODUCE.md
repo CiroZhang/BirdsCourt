@@ -42,13 +42,14 @@ MANIFEST.md's 2026-10-05 entry for the full before/after comparison and the
 three failed "zero real data" alternatives that were tried first).
 
 **Reproducible split**: every run with `seed=0` produces the identical fold
-assignment and per-image predictions. A copy of the saved result is right
-here in this repo at `grouped_5fold_split.json` (source photo -> fold
+assignment and per-image predictions, saved to
+`../BirdsCourtData/grouped_5fold_split.json` (source photo -> fold
 assignment, plus every image's classical vs. reranker error and the overall
-summary) -- so the reported number is independently auditable without
-rerunning anything. The canonical copy (written fresh on rerun) lives at
+summary) -- lives with the dataset since it's a partition of it, not model
+code. So the reported number is independently auditable without rerunning
+anything. The canonical copy (written fresh on rerun) lives at
 `court_reranker/pc_remote_scripts/grouped_5fold_split.json` in the research
-repo. Rerun:
+repo -- copy it to `../BirdsCourtData/` after rerunning. Rerun:
 
 ```
 cd "court_reranker/pc_remote_scripts"

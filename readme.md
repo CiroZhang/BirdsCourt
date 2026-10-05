@@ -56,6 +56,16 @@ so it costs nothing to label. This is the main source of reranker training
 data, since it's cheap to generate hard cases at scale (occlusion, partial
 frame, decoy lines) that real footage rarely provides.
 
+`grouped_5fold_split.json` is the exact, reproducible train/validation split
+behind the reranker's reported hard-case accuracy (paper Table 3) — which
+229-source-photo group is in which fold, and every image's classical vs.
+reranker error (see `Model/REPRODUCE.md`). Note: it references a 431-image
+real crop/perspective-augmented hard-case set (`hard_real_batch`, built from
+the 229 real photos above) that is not yet copied into this dataset folder —
+it currently lives only in the research repo
+(`court_reranker/synthetic_data/real_hard_batch/`) — this split file is
+useful as an audit trail even without the images present.
+
 ## Method
 
 Three stages: generate court-corner candidates, pick one, reproject the net.

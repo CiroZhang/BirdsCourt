@@ -2,11 +2,11 @@
 
 Court-line and net-position detection for a single badminton photo. Given one
 image, returns 22 court-line points plus 4 net points (two net-top endpoints,
-two pole tops) in pixel coordinates.
+two pole tops) in pixel coordinates. This project introduces 3 contributions: 
 
-We build on MonoTrack's classical candidate-generation detector and improve
-the part that picks a winner from its candidate pool, then add a separate
-net-reprojection step since MonoTrack's own net-pixel detection is unreliable.
+1. A learned reranker that improves Monotrack's court-line candidate selection. 
+2.  Net localization by geometric projection, avoiding unreliable direct net detection.
+3. The annotated real and synthetic data pipeline, which supports training and evaluation.
 
 ## Running it
 

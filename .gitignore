@@ -14,13 +14,17 @@ venv/
 .ipynb_checkpoints/
 
 # Model weights / large checkpoints / caches (track via release assets or a
-# model registry, not git -- these get large fast and don't diff usefully)
+# model registry, not git -- these get large fast and don't diff usefully).
+# Exception: Model/weights/ is the deployable repo's shipped checkpoint --
+# it's meant to be cloned and run directly, so it's tracked in git.
 *.pt
 *.pth
 *.safetensors
 *.ckpt
 *.onnx
 *.h5
+!Model/weights/*.pt
+!Model/weights/*.safetensors
 __pycache__/
 .cache/
 

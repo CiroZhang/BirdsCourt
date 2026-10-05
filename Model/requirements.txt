@@ -1,0 +1,10 @@
+opencv-python>=4.5
+numpy
+scipy
+torch
+torchvision
+huggingface_hub
+# VGGT (only needed to run live on new images not already in
+# BirdsCourtData/Real Data/VGGT Outputs/ -- install from source:
+#   git clone https://github.com/facebookresearch/vggt
+#   pip install -e vggt

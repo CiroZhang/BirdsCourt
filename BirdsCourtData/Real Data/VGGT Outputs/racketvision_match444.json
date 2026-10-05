@@ -1,0 +1,10 @@
+{
+  "hfov_deg": 50.80524007345473,
+  "candidates": [
+    {
+      "cand_idx": 0,
+      "vggt_planarity_ratio": 0.017530465920125186,
+      "vggt_mean_conf": 1.8233975172042847
+    }
+  ]
+}

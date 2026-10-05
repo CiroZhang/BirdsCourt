@@ -8,6 +8,8 @@ two pole tops) in pixel coordinates. This project introduces 3 contributions:
 2.  Net localization by geometric projection, avoiding unreliable direct net detection.
 3. The annotated real and synthetic data pipeline, which supports training and evaluation.
 
+All data, weight and code used to train and evaluate the model is all publicly available in this repository
+
 ## Running it
 
 ```

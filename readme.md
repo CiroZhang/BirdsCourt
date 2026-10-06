@@ -37,34 +37,22 @@ standalone with no training step required.
 
 ## Dataset
 
-`BirdsCourtData/` has two parts.
+`BirdsCourtData/` has three parts.
 
-**Real Data** (`BirdsCourtData/Real Data/`) — 229 broadcast and amateur
-badminton photos, each with:
+**Train/** and **Test/** — 228 broadcast and amateur badminton photos, split
+into 182 train and 46 test (see `BirdsCourtData/split/`). Each folder has:
 - `Image/` — the source photo
-- `Annotation/` — hand-verified ground truth: 22 court-line points plus 4 net
-  points, a `source` tag, and a `verified` flag
+- `Annotation/` — hand-verified ground truth: 22 court-line points plus 4 net points
 - `Thumbnell/` — a small preview used by our annotation tool
-- `VGGT Outputs/` — a cached VGGT monocular-depth pass per image, computed once so
-  anyone without a GPU can still run net calibration with the VGGT hint
+- `VGGT Outputs/` — a cached VGGT monocular-depth pass per image, so anyone
+  without a GPU can still run net calibration with the VGGT hint
 
-**Synthetic Data** (`BirdsCourtData/Synthetic Data/`) — 2,963 rendered court
-images with `Image/`, `Annotation/`, and `Mask/`, covering decoy surfaces,
-simulated out-of-frame crops, perspective warps, and mirrored real photos.
-Ground truth here is derived automatically from the render/warp parameters,
-so it costs nothing to label. This is the main source of reranker training
-data, since it's cheap to generate hard cases at scale (occlusion, partial
-frame, decoy lines) that real footage rarely provides.
+**Synthetic Data/** — rendered court images with `Image/`, `Annotation/`, and
+`Mask/`, covering decoy surfaces, out-of-frame crops, perspective warps, and
+mirrored real photos. Ground truth is derived from the render parameters.
 
-`grouped_5fold_split.json` is the exact, reproducible train/validation split
-behind the reranker's reported hard-case accuracy (paper Table 3) — which
-229-source-photo group is in which fold, and every image's classical vs.
-reranker error (see `Model/REPRODUCE.md`). Note: it references a 431-image
-real crop/perspective-augmented hard-case set (`hard_real_batch`, built from
-the 229 real photos above) that is not yet copied into this dataset folder —
-it currently lives only in the research repo
-(`court_reranker/synthetic_data/real_hard_batch/`) — this split file is
-useful as an audit trail even without the images present.
+**split/** — `train_test_split.json` (the split used for every reported
+number), `assign_split.py` (rebuilds Train/ and Test/ from a flat pool), and a README.
 
 ## Method
 
@@ -106,10 +94,10 @@ loss (softplus hinge on score differences between candidates under vs. over
 
 Training data combines the synthetic decoy set, hand-identified real
 MonoTrack failures, random-crop and perspective-warp augmentations of the
-verified real images, and horizontal mirroring. `train_final_model.py`
-trains the shipped checkpoint on all of it combined, with no held-out fold.
+verified real images, and horizontal mirroring. `Model/scripts/birdscourt_train.py`
+trains the shipped checkpoint on the Train split only, so no Test photo enters training.
 
-### 3. Net-position reprojection (`net_detection.py`, `calabration.py`)
+### 3. Net-position reprojection (`net_detection.py`, `camera_calibration.py`)
 
 1. Build a pinhole camera model (intrinsics `K`, pose `R, t`) from the 20
    non-net court-line points output by stage 2.
@@ -128,7 +116,7 @@ trains the shipped checkpoint on all of it combined, with no held-out fold.
    seed for the multi-restart solver, and as a soft regularization residual
    pulling the final solved focal toward it. VGGT runs only if a CUDA GPU is
    available or a cached per-image result exists in `BirdsCourtData/Real
-   Data/VGGT Outputs/` (`vggt_script.py` checks the cache first), otherwise
+   Data/VGGT Outputs/` (`vggt_features.py` checks the cache first), otherwise
    step 4 is skipped and steps 1 through 3 run alone.
 5. Reproject the net's known real-world position (height 1.55m, centered on
    the court midline, see `COURT_POINTS_3D`) through the fitted camera to
@@ -136,13 +124,11 @@ trains the shipped checkpoint on all of it combined, with no held-out fold.
 
 ## Repo layout
 
-- `Model/` — the deployable pipeline (see above)
-- `BirdsCourtData/` — the dataset (see above)
-- `Results/` — qualitative comparison figures
+- `Model/` — pipeline code, weights, `scripts/` (train and eval), `REPRODUCE.md`
+- `BirdsCourtData/` — Train/, Test/, Synthetic Data/, split/
+- `Results/Pictures/` — qualitative comparison figures
 
 ## Reproducing the reported numbers
 
-`Model/REPRODUCE.md` maps every accuracy number in the paper to the exact
-script, data split, and saved artifact that produced it — the reranker's
-grouped-by-source-photo crossval split, the net-calibration validation, and
-the training run behind the shipped `Model/weights/` checkpoint.
+`Model/REPRODUCE.md` has the exact commands and the results table. Training
+uses only `Train/`. Every reported number is computed on `Test/`.

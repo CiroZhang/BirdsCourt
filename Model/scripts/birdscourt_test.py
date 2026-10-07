@@ -7,9 +7,9 @@ import sys
 import time
 from multiprocessing import Pool
 
-REPO = "/scratch/ciro/BirdsCourt_repo"
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 MODEL_DIR = os.path.join(REPO, "Model")
-TEST_DIR = os.path.join(REPO, "BirdsCourtData", "Real Data", "Test")
+TEST_DIR = os.path.join(REPO, "BirdsCourtData", "Test")
 IMG_DIR = os.path.join(TEST_DIR, "Image")
 ANN_DIR = os.path.join(TEST_DIR, "Annotation")
 N_WORKERS = 4

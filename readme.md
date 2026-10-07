@@ -122,6 +122,41 @@ trains the shipped checkpoint on the Train split only, so no Test photo enters t
    the court midline, see `COURT_POINTS_3D`) through the fitted camera to
    get the 2 net-top pole points and 2 ground-level net-endpoint points.
 
+## Results
+
+All numbers are on the 46-photo `Test/` set. BirdsCourt was trained on
+`Train/` only. Success = share of photos (or points) under the pixel
+threshold.
+
+**Court, 4 outer corners**
+
+| Method | Mean | @5px | @10px | @15px |
+|---|---|---|---|---|
+| Vanilla MonoTrack | 6.79 | 89.1% | 89.1% | 93.5% |
+| Hit-frame Court R-CNN | 23.44 | 84.8% | 93.5% | 93.5% |
+| CourtKeyNet (finetuned) | 8.53 | 52.2% | 84.8% | 89.1% |
+| CourtKeyNet (base) | 39.86 | 0.0% | 0.0% | 15.2% |
+| **BirdsCourt** | **5.84** | **93.5%** | **93.5%** | **97.8%** |
+
+**Court, all 22 points** (only MonoTrack and BirdsCourt produce all 22;
+the other baselines output 4–6 points)
+
+| Method | Mean | @5px | @10px | @15px |
+|---|---|---|---|---|
+| MonoTrack | 4.97 | 92.7% | 93.3% | 94.2% |
+| **BirdsCourt** | **4.34** | **95.9%** | **96.5%** | **97.4%** |
+
+**Net, pole tops** (92 points)
+
+| Method | Mean | @5px | @10px | @15px |
+|---|---|---|---|---|
+| MonoTrack | 16.83 | 40.2% | 45.7% | 51.1% |
+| **BirdsCourt** | **12.41** | **47.8%** | **77.2%** | **87.0%** |
+
+The hit-frame row is noisy across reruns of its training (a repeat gave
+57.01 px mean and 87.0% @15px instead of 23.44 / 93.5%), so treat its exact
+numbers loosely. See `Model/REPRODUCE.md` for the commands.
+
 ## Repo layout
 
 - `Model/` — pipeline code, weights, `scripts/` (train and eval), `REPRODUCE.md`

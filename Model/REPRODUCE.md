@@ -55,6 +55,12 @@ Corner error in px. Success = share of photos under the threshold.
 
 Net pole-top on the same Test set: 12.46 px mean, 85.9% success@15px.
 
+Fresh re-run from this cleaned repo (Train-only reranker, 46 Test photos,
+0 errors): full pipeline 5.84 px mean, 93.5% / 93.5% / 97.8% at 5 / 10 / 15 px;
+net pole-top 12.41 px mean, 87.0% success@15px (92 points). The success rates
+match the table; the mean and pole-top numbers differ from the table by
+0.12 px and 0.05 px / 1.1 points, most likely from the RANSAC randomness in the net calibration (not yet checked by repeating with a fixed seed).
+
 ## Notes
 
 - The CourtKeyNet rows come from an earlier run on our cluster. Its code and

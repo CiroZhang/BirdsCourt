@@ -11,7 +11,7 @@ Pipeline (see the paper for validated accuracy numbers):
      trusting MonoTrack's own unreliable net-pixel detection.
 
 First run needs the MonoTrack binary built (monotrack_line_detection/build.sh)
-and, for new images not already in BirdsCourtData/Real Data/VGGT Outputs/, a
+and, for new images not already in BirdsCourtData/{Train,Test}/VGGT Outputs/, a
 CUDA GPU to run VGGT live (weights auto-download via huggingface_hub on first
 use). Everything else runs on CPU.
 """

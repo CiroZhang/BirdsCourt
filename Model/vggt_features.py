@@ -4,7 +4,7 @@ camera calibration) and, optionally, per-candidate planarity/confidence
 (used by the reranker, see court_detection.py). Single-image mode -- VGGT's
 cross-view attention degenerates harmlessly to self-attention for N=1.
 
-Checks BirdsCourtData/Real Data/VGGT Outputs/<basename>.json first -- all
+Checks BirdsCourtData/{Train,Test}/VGGT Outputs/<basename>.json first -- all
 229 images in our real dataset already have this precomputed (ground-truth
 corners used as the "candidate"), so most callers never need a GPU or the
 VGGT weights at all. Only a genuinely new image falls through to a live
@@ -17,9 +17,9 @@ import os
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CACHE_DIR = os.path.join(
-    os.path.dirname(HERE), "BirdsCourtData", "Real Data", "VGGT Outputs"
-)
+CACHE_DIRS = [os.path.join(os.path.dirname(HERE), "BirdsCourtData", split, "VGGT Outputs")
+              for split in ("Train", "Test")]
+CACHE_DIR = CACHE_DIRS[0]
 
 _model = None
 _device = None
@@ -55,6 +55,10 @@ def _load_model():
 
 def _cache_path(image_path):
     base = os.path.splitext(os.path.basename(image_path))[0]
+    for d in CACHE_DIRS:
+        p = os.path.join(d, base + ".json")
+        if os.path.exists(p):
+            return p
     return os.path.join(CACHE_DIR, base + ".json")
 
 

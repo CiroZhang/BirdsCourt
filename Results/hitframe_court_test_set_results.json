@@ -1,0 +1,186 @@
+[
+  {
+    "base": "bfmd_new_PETRONAS-Malaysia-Open-2023-Rankireddy-Shetty-IND-7-vs.-Liu-Ou-CHN-QF_g1_r000",
+    "corner_err": 7.744349479675293
+  },
+  {
+    "base": "bfmd_new_VICTOR-China-Open-2024-Goh-Izzuddin-MAS-7-vs.-He-Ren-CHN-5-F_g1_r000",
+    "corner_err": 1.5811882019042969
+  },
+  {
+    "base": "courtkeynet_data_raw-cluster01_frame206-SINGLE_jpeg.rf.689e75638ea513045229bcc9c4e6835f",
+    "corner_err": 2.120290756225586
+  },
+  {
+    "base": "courtkeynet_data_raw-cluster01_frame97-SINGLE_jpeg.rf.5abfe9948a2af2fbc9543e9c897bf72f",
+    "corner_err": 2.6129889488220215
+  },
+  {
+    "base": "racketvision_match122",
+    "corner_err": 2.2232913970947266
+  },
+  {
+    "base": "racketvision_match137",
+    "corner_err": 3.1884617805480957
+  },
+  {
+    "base": "racketvision_match149",
+    "corner_err": 2.363234519958496
+  },
+  {
+    "base": "racketvision_match154",
+    "corner_err": 3.414278030395508
+  },
+  {
+    "base": "racketvision_match159",
+    "corner_err": 1.8231703042984009
+  },
+  {
+    "base": "racketvision_match170",
+    "corner_err": 3.002213478088379
+  },
+  {
+    "base": "racketvision_match18",
+    "corner_err": 3.9910359382629395
+  },
+  {
+    "base": "racketvision_match195",
+    "corner_err": 5.003120422363281
+  },
+  {
+    "base": "racketvision_match199",
+    "corner_err": 4.984798431396484
+  },
+  {
+    "base": "racketvision_match229",
+    "corner_err": 2.122546911239624
+  },
+  {
+    "base": "racketvision_match231",
+    "corner_err": 3.0488028526306152
+  },
+  {
+    "base": "racketvision_match264",
+    "corner_err": 197.1380157470703
+  },
+  {
+    "base": "racketvision_match267",
+    "corner_err": 1.5729129314422607
+  },
+  {
+    "base": "racketvision_match277",
+    "corner_err": 3.4714441299438477
+  },
+  {
+    "base": "racketvision_match324",
+    "corner_err": 2.524564266204834
+  },
+  {
+    "base": "racketvision_match331",
+    "corner_err": 3.216247081756592
+  },
+  {
+    "base": "racketvision_match339",
+    "corner_err": 3.0596213340759277
+  },
+  {
+    "base": "racketvision_match370",
+    "corner_err": 1.996812105178833
+  },
+  {
+    "base": "racketvision_match371",
+    "corner_err": 1.379470944404602
+  },
+  {
+    "base": "racketvision_match387",
+    "corner_err": 4.020808219909668
+  },
+  {
+    "base": "racketvision_match401",
+    "corner_err": 4.123491287231445
+  },
+  {
+    "base": "racketvision_match417",
+    "corner_err": 2.8711259365081787
+  },
+  {
+    "base": "racketvision_match419",
+    "corner_err": 456.1058349609375
+  },
+  {
+    "base": "racketvision_match435",
+    "corner_err": 2.981351137161255
+  },
+  {
+    "base": "racketvision_match440",
+    "corner_err": 2.467033863067627
+  },
+  {
+    "base": "racketvision_match444",
+    "corner_err": 4.83241605758667
+  },
+  {
+    "base": "racketvision_match452",
+    "corner_err": 1.9548438787460327
+  },
+  {
+    "base": "racketvision_match55",
+    "corner_err": 4.133871078491211
+  },
+  {
+    "base": "tnv2_match10",
+    "corner_err": 4.6299591064453125
+  },
+  {
+    "base": "tnv2_match11",
+    "corner_err": 3.0341687202453613
+  },
+  {
+    "base": "tnv2_match12",
+    "corner_err": 4.114075183868408
+  },
+  {
+    "base": "tnv2_match2",
+    "corner_err": 1.304025411605835
+  },
+  {
+    "base": "tnv2_match4",
+    "corner_err": 1.2314183712005615
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match14_1_17_14",
+    "corner_err": 4.356049537658691
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match16_1_03_06",
+    "corner_err": 5.44224739074707
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match16_3_14_09",
+    "corner_err": 4.420845031738281
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match1_1_01_00",
+    "corner_err": 2.1205272674560547
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match5_1_01_01",
+    "corner_err": 1.2109524011611938
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match6_1_02_00",
+    "corner_err": 2.1857125759124756
+  },
+  {
+    "base": "tnv2_pseudo_Test_match1_1_05_02",
+    "corner_err": 3.898355484008789
+  },
+  {
+    "base": "videobadminton_00_Short_Serve_2022-09-01_19-14-18_dataset_set1_041_004171_004207_A_00",
+    "corner_err": 7.833675861358643
+  },
+  {
+    "base": "videobadminton_07_Transitional_Slice_2022-08-30_18-10-55_dataset_set1_005_000614_000638_A_07",
+    "corner_err": 285.6082458496094
+  }
+]

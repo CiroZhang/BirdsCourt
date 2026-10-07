@@ -1,0 +1,416 @@
+[
+  {
+    "base": "bfmd_new_VICTOR-China-Open-2024-Goh-Izzuddin-MAS-7-vs.-He-Ren-CHN-5-F_g1_r000",
+    "classical_corner_err": 0.382882942311769,
+    "full_corner_err": 1.4417444178999272,
+    "pole_err": [
+      4.329032530615063,
+      1.3085955275943901
+    ]
+  },
+  {
+    "base": "courtkeynet_data_raw-cluster01_frame97-SINGLE_jpeg.rf.5abfe9948a2af2fbc9543e9c897bf72f",
+    "classical_corner_err": 2.2261490537105413,
+    "full_corner_err": 2.2261490537105413,
+    "pole_err": [
+      70.5641603598192,
+      70.79007164710826
+    ]
+  },
+  {
+    "base": "courtkeynet_data_raw-cluster01_frame206-SINGLE_jpeg.rf.689e75638ea513045229bcc9c4e6835f",
+    "classical_corner_err": 1.9750524902794515,
+    "full_corner_err": 1.9750524902794515,
+    "pole_err": [
+      69.95135832315835,
+      69.15139522200391
+    ]
+  },
+  {
+    "base": "racketvision_match122",
+    "classical_corner_err": 0.4981182916291153,
+    "full_corner_err": 0.4981182916291153,
+    "pole_err": [
+      3.4630218968510778,
+      3.4577553289590632
+    ]
+  },
+  {
+    "base": "bfmd_new_PETRONAS-Malaysia-Open-2023-Rankireddy-Shetty-IND-7-vs.-Liu-Ou-CHN-QF_g1_r000",
+    "classical_corner_err": 209.47639965357428,
+    "full_corner_err": 209.47639965357428,
+    "pole_err": [
+      74.47852126969599,
+      74.28208191942116
+    ]
+  },
+  {
+    "base": "racketvision_match149",
+    "classical_corner_err": 0.32213961701733246,
+    "full_corner_err": 1.0010128669521865,
+    "pole_err": [
+      6.798791652920131,
+      5.302039657386976
+    ]
+  },
+  {
+    "base": "racketvision_match154",
+    "classical_corner_err": 1.9001761129419323,
+    "full_corner_err": 1.9714745098597852,
+    "pole_err": [
+      2.224541494292738,
+      3.927326336526393
+    ]
+  },
+  {
+    "base": "racketvision_match159",
+    "classical_corner_err": 0.04864474338253787,
+    "full_corner_err": 0.04864474338253787,
+    "pole_err": [
+      6.038441391632431,
+      4.33510921657457
+    ]
+  },
+  {
+    "base": "racketvision_match18",
+    "classical_corner_err": 0.10770617146070355,
+    "full_corner_err": 0.7604023594262712,
+    "pole_err": [
+      8.635026239403894,
+      11.329349874100595
+    ]
+  },
+  {
+    "base": "racketvision_match170",
+    "classical_corner_err": 0.3421707916804259,
+    "full_corner_err": 0.3421707916804259,
+    "pole_err": [
+      9.658483609909874,
+      5.736706793827623
+    ]
+  },
+  {
+    "base": "racketvision_match229",
+    "classical_corner_err": 0.04602606585249996,
+    "full_corner_err": 0.04602606585249996,
+    "pole_err": [
+      1.8953602577399853,
+      3.751314181050878
+    ]
+  },
+  {
+    "base": "racketvision_match137",
+    "classical_corner_err": 0.15690258082599418,
+    "full_corner_err": 2.00198669128858,
+    "pole_err": [
+      5.523561780333368,
+      4.615521420585663
+    ]
+  },
+  {
+    "base": "racketvision_match195",
+    "classical_corner_err": 0.04733954814370129,
+    "full_corner_err": 1.147251678693474,
+    "pole_err": [
+      10.837671178239919,
+      3.8230807937689537
+    ]
+  },
+  {
+    "base": "racketvision_match199",
+    "classical_corner_err": 0.7107838981003134,
+    "full_corner_err": 0.7107838981003134,
+    "pole_err": [
+      0.7161475725630739,
+      12.924105830145217
+    ]
+  },
+  {
+    "base": "racketvision_match231",
+    "classical_corner_err": 0.025232766659665114,
+    "full_corner_err": 0.025232766659665114,
+    "pole_err": [
+      7.932821115310838,
+      1.6715115975400068
+    ]
+  },
+  {
+    "base": "racketvision_match267",
+    "classical_corner_err": 0.09076081719907819,
+    "full_corner_err": 1.3138572733176475,
+    "pole_err": [
+      2.011056529316608,
+      2.5215657782904075
+    ]
+  },
+  {
+    "base": "racketvision_match277",
+    "classical_corner_err": 0.3766622419292043,
+    "full_corner_err": 0.3766622419292043,
+    "pole_err": [
+      13.119330275157465,
+      12.618099537727572
+    ]
+  },
+  {
+    "base": "racketvision_match264",
+    "classical_corner_err": 0.43554141656620915,
+    "full_corner_err": 0.6914703163234578,
+    "pole_err": [
+      10.312348787338212,
+      11.593613329518035
+    ]
+  },
+  {
+    "base": "racketvision_match324",
+    "classical_corner_err": 0.13127695792878366,
+    "full_corner_err": 0.8175448914207992,
+    "pole_err": [
+      2.700896960557797,
+      4.2553335625051325
+    ]
+  },
+  {
+    "base": "racketvision_match331",
+    "classical_corner_err": 0.2339876168808498,
+    "full_corner_err": 0.9359402886690885,
+    "pole_err": [
+      9.618032790287288,
+      3.873679029112298
+    ]
+  },
+  {
+    "base": "racketvision_match339",
+    "classical_corner_err": 0.893105727778264,
+    "full_corner_err": 0.893105727778264,
+    "pole_err": [
+      17.46991773818281,
+      20.55490578870686
+    ]
+  },
+  {
+    "base": "racketvision_match370",
+    "classical_corner_err": 0.8077471215179156,
+    "full_corner_err": 0.8077471215179156,
+    "pole_err": [
+      10.308481567936816,
+      9.764459586672729
+    ]
+  },
+  {
+    "base": "racketvision_match371",
+    "classical_corner_err": 0.07568459048446682,
+    "full_corner_err": 0.07568459048446682,
+    "pole_err": [
+      4.465967408881113,
+      3.8728930896198577
+    ]
+  },
+  {
+    "base": "racketvision_match387",
+    "classical_corner_err": 0.06640370180442022,
+    "full_corner_err": 0.8536500385789142,
+    "pole_err": [
+      7.134012915449324,
+      7.521193232067815
+    ]
+  },
+  {
+    "base": "racketvision_match417",
+    "classical_corner_err": 0.35900762540897924,
+    "full_corner_err": 0.35900762540897924,
+    "pole_err": [
+      2.519523636831055,
+      1.0812111656320484
+    ]
+  },
+  {
+    "base": "racketvision_match419",
+    "classical_corner_err": 0.07281598377571326,
+    "full_corner_err": 0.33968307554029026,
+    "pole_err": [
+      8.215669603701139,
+      8.030291838385576
+    ]
+  },
+  {
+    "base": "racketvision_match401",
+    "classical_corner_err": 0.1864041602992456,
+    "full_corner_err": 0.5112129053279629,
+    "pole_err": [
+      6.647703049592019,
+      8.832760685831778
+    ]
+  },
+  {
+    "base": "racketvision_match444",
+    "classical_corner_err": 0.05744199809282202,
+    "full_corner_err": 0.05744199809282202,
+    "pole_err": [
+      6.978540018715651,
+      1.664860144475982
+    ]
+  },
+  {
+    "base": "racketvision_match440",
+    "classical_corner_err": 0.8807963351523563,
+    "full_corner_err": 0.8807963351523563,
+    "pole_err": [
+      2.0529476629408836,
+      2.4356632438723245
+    ]
+  },
+  {
+    "base": "racketvision_match435",
+    "classical_corner_err": 0.7919578372619065,
+    "full_corner_err": 0.7919578372619065,
+    "pole_err": [
+      2.8569321596170547,
+      3.2087928193285187
+    ]
+  },
+  {
+    "base": "tnv2_match10",
+    "classical_corner_err": 0.06149807856148532,
+    "full_corner_err": 0.06149807856148532,
+    "pole_err": [
+      4.808786094863113,
+      10.529445513063806
+    ]
+  },
+  {
+    "base": "racketvision_match452",
+    "classical_corner_err": 0.0842275394240642,
+    "full_corner_err": 0.0842275394240642,
+    "pole_err": [
+      3.332115618522588,
+      8.7802944194061
+    ]
+  },
+  {
+    "base": "tnv2_match2",
+    "classical_corner_err": 0.6824999467973591,
+    "full_corner_err": 0.6824999467973591,
+    "pole_err": [
+      4.999036316416362,
+      7.858100955927137
+    ]
+  },
+  {
+    "base": "tnv2_match11",
+    "classical_corner_err": 0.054039824966649566,
+    "full_corner_err": 0.054039824966649566,
+    "pole_err": [
+      8.155305196488305,
+      7.820829834988635
+    ]
+  },
+  {
+    "base": "tnv2_match4",
+    "classical_corner_err": 0.10839680170923426,
+    "full_corner_err": 0.10839680170923426,
+    "pole_err": [
+      2.919371056237995,
+      5.346684037438914
+    ]
+  },
+  {
+    "base": "tnv2_match12",
+    "classical_corner_err": 0.19491873351762123,
+    "full_corner_err": 1.7841840948665684,
+    "pole_err": [
+      6.005202459455575,
+      5.728351480794394
+    ]
+  },
+  {
+    "base": "racketvision_match55",
+    "classical_corner_err": 2.135759351453324,
+    "full_corner_err": 2.6207483173155417,
+    "pole_err": [
+      3.6616605362965715,
+      5.141894418488474
+    ]
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match16_3_14_09",
+    "classical_corner_err": 1.8666532100114492,
+    "full_corner_err": 0.9880189417435418,
+    "pole_err": [
+      4.352358700937597,
+      1.7760488828999461
+    ]
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match14_1_17_14",
+    "classical_corner_err": 1.2674780664698635,
+    "full_corner_err": 1.2674780664698635,
+    "pole_err": [
+      3.339941263466234,
+      2.5825088537632626
+    ]
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match6_1_02_00",
+    "classical_corner_err": 0.9239412064539273,
+    "full_corner_err": 1.2706854217642112,
+    "pole_err": [
+      1.845344454297569,
+      4.78137053289128
+    ]
+  },
+  {
+    "base": "tnv2_pseudo_Test_match1_1_05_02",
+    "classical_corner_err": 0.04490044648167969,
+    "full_corner_err": 0.2514440216666747,
+    "pole_err": [
+      6.440805461949609,
+      3.918731416838961
+    ]
+  },
+  {
+    "base": "videobadminton_00_Short_Serve_2022-09-01_19-14-18_dataset_set1_041_004171_004207_A_00",
+    "classical_corner_err": 11.514237933200524,
+    "full_corner_err": 11.831636491275088,
+    "pole_err": [
+      80.62456946526352,
+      58.2911883727313
+    ]
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match16_1_03_06",
+    "classical_corner_err": 1.208284586534814,
+    "full_corner_err": 1.208284586534814,
+    "pole_err": [
+      1.75655695755002,
+      2.516645146352802
+    ]
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match1_1_01_00",
+    "classical_corner_err": 1.063092741696819,
+    "full_corner_err": 1.063092741696819,
+    "pole_err": [
+      2.238591310994229,
+      1.0076601643222156
+    ]
+  },
+  {
+    "base": "tnv2_pseudo_Professional_match5_1_01_01",
+    "classical_corner_err": 0.2494470155650497,
+    "full_corner_err": 0.6969896032372827,
+    "pole_err": [
+      7.666682638147787,
+      4.649940117568416
+    ]
+  },
+  {
+    "base": "videobadminton_07_Transitional_Slice_2022-08-30_18-10-55_dataset_set1_005_000614_000638_A_07",
+    "classical_corner_err": 11.402289346260316,
+    "full_corner_err": 11.402289346260316,
+    "pole_err": [
+      52.740732903342106,
+      48.31549260167084
+    ]
+  }
+]

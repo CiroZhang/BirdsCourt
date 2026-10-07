@@ -23,10 +23,10 @@ from sklearn.decomposition import PCA
 random.seed(0)
 torch.manual_seed(0)
 
-REPO = "/scratch/ciro/BirdsCourt_repo"
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ORIGINAL_PATH = "/scratch/ciro/real_hard_batch/reranker_traindata_v5.jsonl"
 HARD_PATH = "/scratch/ciro/real_hard_batch/traindata_hard_v5.jsonl"
-SPLIT_PATH = os.path.join(REPO, "BirdsCourtData", "split_v3", "train_test_split_v3.json")
+SPLIT_PATH = os.path.join(REPO, "BirdsCourtData", "split", "train_test_split.json")
 OUT_MODEL = os.path.join(REPO, "Model", "weights", "reranker_model.pt")
 OUT_PCA = os.path.join(REPO, "Model", "weights", "pca_artifacts.npz")
 

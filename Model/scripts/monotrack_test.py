@@ -10,12 +10,12 @@ from multiprocessing import Pool
 
 import numpy as np
 
-REPO = "/scratch/ciro/BirdsCourt_repo"
-TEST_DIR = os.path.join(REPO, "BirdsCourtData", "Real Data", "Test")
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+TEST_DIR = os.path.join(REPO, "BirdsCourtData", "Test")
 IMG_DIR = os.path.join(TEST_DIR, "Image")
 ANN_DIR = os.path.join(TEST_DIR, "Annotation")
-DETECT_BIN = "/scratch/ciro/monotrack_net_included_src/build/detect"
-WORK_ROOT = "/scratch/ciro/vanilla_test_work"
+DETECT_BIN = os.environ.get("MONOTRACK_NET_BIN", "/scratch/ciro/monotrack_net_included_src/build/detect")
+WORK_ROOT = os.path.join(REPO, "Results", "_work")
 N_WORKERS = 4
 
 POINT_NAMES = [

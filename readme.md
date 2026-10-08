@@ -132,7 +132,7 @@ threshold.
 
 | Method | Mean | @5px | @10px | @15px |
 |---|---|---|---|---|
-| Vanilla MonoTrack | 6.79 | 89.1% | 89.1% | 93.5% |
+| MonoTrack | 6.79 | 89.1% | 89.1% | 93.5% |
 | Hit-frame Court R-CNN | 23.44 | 84.8% | 93.5% | 93.5% |
 | CourtKeyNet (finetuned) | 8.53 | 52.2% | 84.8% | 89.1% |
 | CourtKeyNet (base) | 39.86 | 0.0% | 0.0% | 15.2% |

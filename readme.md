@@ -136,7 +136,7 @@ threshold.
 | Hit-frame Court R-CNN | 23.44 | 84.8% | 93.5% | 93.5% |
 | CourtKeyNet (finetuned) | 8.53 | 52.2% | 84.8% | 89.1% |
 | CourtKeyNet (base) | 39.86 | 0.0% | 0.0% | 15.2% |
-| TennisCourtDetector | 33.97 | n/a | n/a | 35.1% |
+| TennisCourtDetector | 33.97 | 0.0% | 7.1% | 35.1% |
 | **BirdsCourt** | **5.84** | **93.5%** | **93.5%** | **97.8%** |
 
 **Court, all 22 points** (only MonoTrack and BirdsCourt produce all 22;

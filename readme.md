@@ -56,48 +56,61 @@ number), `assign_split.py` (rebuilds Train/ and Test/ from a flat pool), and a R
 
 ## Method
 
-Three stages: generate court-corner candidates, pick one, reproject the net.
+Four stages: generate candidates, score each one independently, rank them
+with a learned combiner, reproject the net. (This describes the pipeline
+as it's currently being built; the shipped checkpoint in `weights/` is the
+previous-generation reranker described further down until this is finished
+and swapped in.)
 
 ### 1. Candidate generation
 
-MonoTrack's own classical line-pixel detector proposes 10 to 30 candidate
-court-line hypotheses per image. Each candidate fits a homography between
-detected line intersections and the known court geometry, then warps the
-full court template through it. The net term is removed from this stage's
-internal scoring (net pixels aren't used to build or score candidates at
-all), net position is handled separately in stage 3.
+MonoTrack's own classical pipeline still proposes court-line candidates:
+each one fits a homography between a subset of detected line intersections
+and the known court geometry, then warps the full court template through
+it. Stock MonoTrack only ever hands back its own single best-scoring pick,
+internally forming anywhere from a handful to tens of thousands of
+geometrically valid candidates per image (however many its own basic
+validity gate -- convex, large enough, mostly in frame -- lets through)
+before applying its own classical score to pick a winner. We modified the
+compiled detection binary (`monotrack_line_detection/src/main.cpp`) to dump
+every one of those candidates uncapped instead of truncating to the
+winner, and we don't use MonoTrack's own classical score anywhere
+downstream -- scoring and ranking are entirely our own, below.
 
-### 2. Candidate selection
+### 2. Candidate scoring
 
-**Learned reranker** (`reranker.py`), used when `weights/` has a checkpoint.
-For every candidate in the pool:
+Three small, independent models, each trained only on `Train/`, give every
+candidate in the pool one confidence score:
 
-1. classical rank and score, z-normalized within the pool.
-2. four outer-corner pixel positions, normalized by image size.
-3. warp the candidate into a canonical top-down view via its own homography
-   (`_warp_candidate`), embed it with a frozen ResNet-18 (ImageNet weights),
-   PCA-reduce the 512-d embedding to 12 dims (`weights/pca_artifacts.npz`).
-4. `_template_alignment_score` — sample points along each of the court's 12
-   real line segments at their predicted position in the canonical warp,
-   check whether those pixels are brighter than pixels just off to the side.
-5. (court stage only) two VGGT-derived features: planarity of the
-   candidate's quadrilateral under VGGT's monocular depth estimate, and
-   VGGT's per-point confidence.
+- **EdgeScorer** — samples points along the court's 12 real line segments
+  and checks proximity to a classical Canny edge map (a per-line
+  hit-fraction, 12 features) → logistic regression.
+- **OrientationScorer** — the same sample points, but checks whether the
+  local image-gradient direction actually matches the line's own expected
+  perpendicular direction, catching edges that are merely nearby but
+  point the wrong way (ad boards, crowd, shadows) → logistic regression on
+  12 features.
+- **PixelScorer** — a small CNN that takes the whole photo plus the
+  candidate's rendered 12-line mask as a 4-channel input and learns one
+  holistic confidence score directly from pixels, with no hand-picked
+  sample points.
 
-These feed a DeepSets-style set ranker (`SetRanker`). Each candidate's
-feature vector goes through a 2-layer MLP embedding, embeddings are
-mean-pooled into one permutation-invariant pool-level vector, that pool
-vector is concatenated back onto each candidate's own embedding, then a
-final 2-layer head scores each candidate. Trained with a pairwise ranking
-loss (softplus hinge on score differences between candidates under vs. over
-15px corner error).
+### 3. Candidate ranking
 
-Training data combines the synthetic decoy set, hand-identified real
-MonoTrack failures, random-crop and perspective-warp augmentations of the
-verified real images, and horizontal mirroring. `Model/scripts/birdscourt_train.py`
-trains the shipped checkpoint on the Train split only, so no Test photo enters training.
+A learned combiner picks the final candidate. For every candidate it
+builds one feature vector from: the three scorers' own scores above, the 4
+outer-corner pixel positions (normalized by image size), and a compressed
+per-candidate image feature — the candidate is warped into a canonical
+top-down view via its own homography, embedded with a frozen ResNet-18
+(ImageNet weights), then reduced to a small number of dimensions. A
+sanity-check term is also planned, to catch degenerate/outlier candidates
+the scorers above don't reliably flag on their own — still in development,
+so left out of this description for now. A small MLP maps the combined
+vector to one final score per candidate, trained with a pairwise ranking
+loss (a candidate under 15px corner error should outscore one over), and
+the pool's top-scoring candidate is the pipeline's pick.
 
-### 3. Net-position reprojection (`net_detection.py`, `camera_calibration.py`)
+### 4. Net-position reprojection (`net_detection.py`, `camera_calibration.py`)
 
 1. Build a pinhole camera model (intrinsics `K`, pose `R, t`) from the 20
    non-net court-line points output by stage 2.

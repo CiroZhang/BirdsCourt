@@ -25,7 +25,7 @@ torch.manual_seed(0)
 
 # NOTE: path depth updated after this script moved from Model/scripts/ to
 # Model/legacy_reranker/scripts/ when the reranker was superseded by
-# ../../honest_scorer.py -- one more dirname() than the original version.
+# ../../candidate_scorer.py -- one more dirname() than the original version.
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 ORIGINAL_PATH = "/scratch/ciro/real_hard_batch/reranker_traindata_v5.jsonl"
 HARD_PATH = "/scratch/ciro/real_hard_batch/traindata_hard_v5.jsonl"

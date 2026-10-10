@@ -38,7 +38,7 @@ points = court_detection.detect("photo.jpg")          # 22 court-line points
 net = net_detection.detect_net("photo.jpg", points, img_w, img_h)  # 4 net points
 ```
 
-`Model/weights/honest_scorer/` ships the trained scorer weights, so the
+`Model/weights/candidate_scorer/` ships the trained scorer weights, so the
 repo runs standalone with no training step required.
 
 ## Dataset
@@ -64,7 +64,7 @@ number), `assign_split.py` (rebuilds Train/ and Test/ from a flat pool), and a R
 
 Four stages: generate candidates, score each one independently, combine
 with fixed weights, reproject the net. This is exactly what's shipped in
-`weights/honest_scorer/` -- not a work in progress.
+`weights/candidate_scorer/` -- not a work in progress.
 
 ### 1. Candidate generation
 
@@ -160,7 +160,7 @@ for the full derivation, ablation, and the one known remaining miss.
 | CourtKeyNet (finetuned) | 8.53 | 52.2% | 84.8% | 89.1% |
 | CourtKeyNet (base) | 39.86 | 0.0% | 0.0% | 15.2% |
 | TennisCourtDetector | 33.97 | 0.0% | 7.1% | 35.1% |
-| **BirdsCourt (honest_scorer.py)** | **2.86** | **91.3%** | **95.7%** | **100.0%** |
+| **BirdsCourt (candidate_scorer.py)** | **2.86** | **91.3%** | **95.7%** | **100.0%** |
 
 **Net, pole tops**
 
@@ -168,11 +168,9 @@ for the full derivation, ablation, and the one known remaining miss.
 |---|---|---|
 | MonoTrack | 16.83 | 51.1% |
 | Legacy reranker + net_detection.py (reported) | 12.46 | 85.9% |
-| **BirdsCourt (honest_scorer.py court points + net_detection.py)** | not yet measured | not yet measured |
 
-Net-pole re-evaluation under the new court points is running as of
-2026-10-10; this row is a placeholder until it finishes -- check
-`Model/RESULTS.md` then for the filled-in numbers.
+BirdsCourt's net-pole number isn't measured yet (re-evaluation running as
+of 2026-10-10) -- will add that row once it's done, not before.
 
 The hit-frame row is noisy across reruns of its training (a repeat gave
 57.01 px mean and 87.0% @15px instead of 23.44 / 93.5%), so treat its exact
@@ -184,7 +182,7 @@ and `Model/REPRODUCE.md` for the legacy reranker's commands.
 ## Repo layout
 
 - `Model/` — pipeline code and weights
-  - `honest_scorer.py`, `weights/honest_scorer/` — current candidate scorer
+  - `candidate_scorer.py`, `weights/candidate_scorer/` — current candidate scorer
   - `court_detection.py`, `net_detection.py`, `main.py` — the pipeline entry points
   - `legacy_reranker/` — superseded MonoTrack-score-reliant reranker, kept for reference
   - `scripts/`, `REPRODUCE.md` — legacy reranker's train/eval commands

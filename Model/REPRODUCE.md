@@ -4,18 +4,18 @@
 numbers.** This file documents the older reranker-based pipeline (now in
 `legacy_reranker/`), kept for archival reproducibility of its reported
 numbers. It uses MonoTrack's own classical score as an input feature;
-the current method (`honest_scorer.py`) doesn't, and scores higher.
+the current method (`candidate_scorer.py`) doesn't, and scores higher.
 
 ## Layout
 
     BirdsCourt/
       Model/                       pipeline code and weights
-        court_detection.py         court corners (MonoTrack + honest_scorer)
-        honest_scorer.py           CURRENT candidate scorer -- see ../RESULTS.md
+        court_detection.py         court corners (MonoTrack + candidate_scorer)
+        candidate_scorer.py        CURRENT candidate scorer -- see ../RESULTS.md
         net_detection.py           net poles via camera calibration
         vggt_features.py           cached VGGT focal/planarity features
         camera_calibration.py      pinhole camera fit (inside monotrack_line_detection/)
-        weights/honest_scorer/     current scorer's weights
+        weights/candidate_scorer/  current scorer's weights
         legacy_reranker/           superseded reranker (uses MonoTrack's own score)
           reranker.py                learned candidate reranker
           weights/                   reranker_model.pt, pca_artifacts.npz

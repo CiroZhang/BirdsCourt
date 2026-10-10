@@ -25,6 +25,8 @@ venv/
 *.h5
 !Model/weights/*.pt
 !Model/weights/*.safetensors
+!Model/weights/**/*.pt
+!Model/weights/**/*.safetensors
 __pycache__/
 .cache/
 

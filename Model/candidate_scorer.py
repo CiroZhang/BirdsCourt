@@ -38,7 +38,7 @@ import torch
 import torch.nn as nn
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-WEIGHTS_DIR = os.path.join(HERE, "weights", "honest_scorer")
+WEIGHTS_DIR = os.path.join(HERE, "weights", "candidate_scorer")
 
 CORNERS = ["P1_TL", "P2_BL", "P3_BR", "P4_TR"]
 

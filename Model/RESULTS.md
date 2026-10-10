@@ -1,7 +1,7 @@
 # Final pipeline results
 
 This supersedes the reranker-based numbers in `REPRODUCE.md`. The method
-here (`honest_scorer.py`) picks the best candidate out of MonoTrack's own
+here (`candidate_scorer.py`) picks the best candidate out of MonoTrack's own
 uncapped candidate pool using three independently-trained scorers that
 read only real image evidence -- **never MonoTrack's own classical score**,
 directly or indirectly (the old `reranker.py` approach explicitly fed
@@ -19,7 +19,7 @@ CORRECTION" section for the full derivation.
 
 | Method | Mean err | Median | @5px | @10px | @15px |
 |---|---|---|---|---|---|
-| **Ours (honest_scorer.py), Test (46)** | **2.86px*** | 2.72px | 91.3% | 95.7% | **100.0%** |
+| **Ours (candidate_scorer.py), Test (46)** | **2.86px*** | 2.72px | 91.3% | 95.7% | **100.0%** |
 | Ours, Train (182) | 3.24px | 2.24px | 91.8% | 97.8% | 99.5% |
 | Vanilla MonoTrack (own classical score) | 6.79px | -- | 89.1% | 89.1% | 93.5% |
 | Old reranker (reads MonoTrack's score as a feature) | 5.96px | -- | 93.5% | 93.5% | 97.8% |
@@ -32,13 +32,11 @@ method already built before the scoring bug was found.
 
 ## Net pole-top (requires camera calibration from the court points above)
 
-**Status: evaluation job still running on the cluster as of 2026-10-10 --
-this table has not been filled in yet.** (One image/minute or so, 46
-images total -- large candidate pools plus per-image RANSAC calibration.)
+Not measured yet -- evaluation running on the cluster as of 2026-10-10.
+Will add this section once it's done, not before.
 
 | Method | Mean err | @15px |
 |---|---|---|
-| **Ours (honest_scorer.py court points -> net_detection.py), Test** | not yet measured | not yet measured |
 | Old reranker + net_detection.py (reported) | 12.46px | 85.9% |
 
 ## Scorer ablation (Test, same corrected metric)
@@ -55,7 +53,7 @@ images total -- large candidate pools plus per-image RANSAC calibration.)
 The plain combo already matches the consensus heuristic exactly (every
 tolerance from 2px to 100px gives the identical 99.5% Train CV mean, i.e.
 the heuristic is provably not doing any work anymore once scored
-correctly) -- so `honest_scorer.py` ships the plain combo: simpler, same
+correctly) -- so `candidate_scorer.py` ships the plain combo: simpler, same
 result.
 
 ## One remaining known miss

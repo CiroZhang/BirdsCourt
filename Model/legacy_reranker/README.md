@@ -2,7 +2,7 @@
 
 This is the original learned candidate reranker. Kept for reference and
 reproducibility of the numbers it originally reported, but **it is not the
-recommended method anymore** -- `honest_scorer.py` (at the repo root)
+recommended method anymore** -- `candidate_scorer.py` (at the repo root)
 supersedes it.
 
 **Why it's deprecated:** its own feature set explicitly includes
@@ -11,12 +11,12 @@ by its internal pixel-overlap score), z-scored across the pool" (see
 `reranker.py`'s `rerank_candidates()`). That's a direct dependency on
 MonoTrack's own classical score as an input feature.
 
-`honest_scorer.py` was built specifically to answer: can a candidate
+`candidate_scorer.py` was built specifically to answer: can a candidate
 selector match or beat this, using **only** independently-derived image
 evidence (edge alignment, gradient orientation, and a small pixel/geometry
 CNN), never touching MonoTrack's score at all? Scored under the same
 convention (`scripts/monotrack_test.py`'s dihedral-permutation-aware
-corner metric), the answer is yes: `honest_scorer.py` reaches 100% Test /
+corner metric), the answer is yes: `candidate_scorer.py` reaches 100% Test /
 99.5% Train pool-top-1 accuracy (<15px), beating both vanilla MonoTrack
 (93.5%) and this reranker (97.8%). See `../RESULTS.md`.
 

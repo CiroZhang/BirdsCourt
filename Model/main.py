@@ -5,7 +5,7 @@
 
 Pipeline (see RESULTS.md for validated accuracy numbers):
   1. court_detection.py  -- MonoTrack uncapped candidate generation, scored
-     by honest_scorer.py's three independent scorers (if weights/ is
+     by candidate_scorer.py's three independent scorers (if weights/ is
      present) -- never reuses MonoTrack's own classical score.
   2. net_detection.py    -- reprojects net position from a camera calibrated
      off the court points above (VGGT-assisted if available), instead of
@@ -52,7 +52,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("image", help="path to a badminton court photo")
     parser.add_argument("--overlay", help="also save a dot-overlay visualization to this path")
-    parser.add_argument("--no-scorer", action="store_true", help="skip honest_scorer.py even if its weights are present (classical pick only)")
+    parser.add_argument("--no-scorer", action="store_true", help="skip candidate_scorer.py even if its weights are present (classical pick only)")
     parser.add_argument("--no-vggt", action="store_true", help="skip the VGGT focal hint for net position (classical-only calibration)")
     args = parser.parse_args()
 

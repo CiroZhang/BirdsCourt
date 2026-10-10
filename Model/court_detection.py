@@ -7,7 +7,7 @@ in monotrack_line_detection/src/main.cpp), then either:
 
   - picks the classical top candidate (zero-downside vs. the original
     net-scored MonoTrack), or
-  - scores the full candidate pool with honest_scorer.py's three
+  - scores the full candidate pool with candidate_scorer.py's three
     independently-trained scorers (edge alignment, gradient orientation,
     pixel/geometry CNN) and picks the best by their fixed-weight combo --
     the current, recommended method. Reaches 100% Test / 99.5% Train
@@ -107,12 +107,12 @@ def detect(image_path, use_scorer="auto"):
     """Returns a dict of {point_name: (x, y)} for the 22 court-line points
     (see POINT_NAMES) -- no net points, see net_detection.py for that.
 
-    use_scorer: "auto" (use honest_scorer.py if its weights/ are present,
+    use_scorer: "auto" (use candidate_scorer.py if its weights/ are present,
     else fall back to classical), True (require it, raise if weights
     missing), False (always classical, even if weights are present)."""
     _check_binary()
 
-    scorer_weights_dir = os.path.join(HERE, "weights", "honest_scorer")
+    scorer_weights_dir = os.path.join(HERE, "weights", "candidate_scorer")
     have_scorer_weights = all(
         os.path.exists(os.path.join(scorer_weights_dir, f))
         for f in ("clf_c.pkl", "clf_d.pkl", "geometry_cnn_best.pt")
@@ -127,8 +127,8 @@ def detect(image_path, use_scorer="auto"):
         if not want_scorer or not candidates or len(candidates) < 2:
             return winner
 
-        import honest_scorer
-        return honest_scorer.pick_best(image_path, candidates)
+        import candidate_scorer
+        return candidate_scorer.pick_best(image_path, candidates)
     finally:
         shutil.rmtree(work_dir, ignore_errors=True)
 

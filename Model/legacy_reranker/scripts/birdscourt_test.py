@@ -9,7 +9,7 @@ from multiprocessing import Pool
 
 # NOTE: path depth updated after this script moved from Model/scripts/ to
 # Model/legacy_reranker/scripts/ when the reranker was superseded by
-# ../../honest_scorer.py -- one more dirname() than the original version.
+# ../../candidate_scorer.py -- one more dirname() than the original version.
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 MODEL_DIR = os.path.join(REPO, "Model")
 LEGACY_DIR = os.path.join(MODEL_DIR, "legacy_reranker")
@@ -72,7 +72,7 @@ def process_one(fname):
         classical_pts = court_detection.detect(img_path, use_scorer=False)
         result["classical_corner_err"] = best_perm_corner_err(classical_pts, gt)
 
-        # Specifically the OLD reranker (not honest_scorer.py, which is now
+        # Specifically the OLD reranker (not candidate_scorer.py, which is now
         # court_detection.detect()'s default) -- this script's whole point
         # is reproducing the legacy reranker's own reported numbers.
         import shutil

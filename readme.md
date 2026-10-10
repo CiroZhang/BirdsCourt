@@ -142,14 +142,13 @@ own convention.
 
 | Method | Mean | @5px | @10px | @15px |
 |---|---|---|---|---|
-| MonoTrack (its own classical score) | 6.79 | 89.1% | 89.1% | 93.5% |
-| Legacy reranker (reads MonoTrack's score as a feature) | 5.96 | 93.5% | 93.5% | 97.8% |
+| MonoTrack | 6.79 | 89.1% | 89.1% | 93.5% |
 | Hit-frame Court R-CNN | 23.44 | 84.8% | 93.5% | 93.5% |
 | CourtKeyNet (finetuned) | 8.53 | 52.2% | 84.8% | 89.1% |
 | CourtKeyNet (base) | 39.86 | 0.0% | 0.0% | 15.2% |
 | TennisCourtDetector | 33.97 | 0.0% | 7.1% | 35.1% |
-| **BirdsCourt (Ours), Test** | **2.86** | **91.3%** | **95.7%** | **100.0%** |
-| **BirdsCourt (Ours), Train** | **3.24** | **91.8%** | **97.8%** | **99.5%** |
+| **BirdsCourt (Ours, Test set), Test** | **2.86** | **91.3%** | **95.7%** | **100.0%** |
+| **BirdsCourt (Ours, Train set), Train** | **3.24** | **91.8%** | **97.8%** | **99.5%** |
 
 Beats both the vanilla-MonoTrack and legacy-reranker baselines, using zero
 privileged information. "Legacy reranker" reads MonoTrack's own classical

@@ -97,15 +97,13 @@ candidate in the pool one confidence score:
   holistic confidence score directly from pixels, with no hand-picked
   sample points.
 
-### 3. Candidate combination
-
 Each scorer's own logit is passed through its own sigmoid, then combined
 with one fixed set of weights per candidate:
 `0.095*EdgeScorer + 0.218*OrientationScorer + 0.836*PixelScorer` (chosen
 via differential evolution on `Train/` only). The pool's top-scoring
 candidate by this combo is the pipeline's pick.
 
-### 4. Net-position reprojection (`net_detection.py`, `camera_calibration.py`)
+### 3. Net-position reprojection (`net_detection.py`, `camera_calibration.py`)
 
 1. Build a pinhole camera model (intrinsics `K`, pose `R, t`) from the 20
    non-net court-line points output by stage 2.

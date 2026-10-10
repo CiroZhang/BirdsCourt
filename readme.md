@@ -140,15 +140,15 @@ own convention.
 
 **Court, 4 outer corners**
 
-| Method | Mean | @5px | @10px | @15px |
-|---|---|---|---|---|
-| MonoTrack | 6.79 | 89.1% | 89.1% | 93.5% |
-| Hit-frame Court R-CNN | 23.44 | 84.8% | 93.5% | 93.5% |
-| CourtKeyNet (finetuned) | 8.53 | 52.2% | 84.8% | 89.1% |
-| CourtKeyNet (base) | 39.86 | 0.0% | 0.0% | 15.2% |
-| TennisCourtDetector | 33.97 | 0.0% | 7.1% | 35.1% |
-| **BirdsCourt (Ours, Test set), Test** | **2.86** | **91.3%** | **95.7%** | **100.0%** |
-| **BirdsCourt (Ours, Train set), Train** | **3.24** | **91.8%** | **97.8%** | **99.5%** |
+| Method | Mean | Median | @5px | @10px | @15px |
+|---|---|---|---|---|---|
+| MonoTrack | 6.79 | 0.33 | 89.1% | 89.1% | 93.5% |
+| Hit-frame Court R-CNN | 23.44 | 3.05 | 84.8% | 93.5% | 93.5% |
+| CourtKeyNet (finetuned) | 8.53 | 4.87 | 52.2% | 84.8% | 89.1% |
+| CourtKeyNet (base) | 39.86 | 30.22 | 0.0% | 0.0% | 15.2% |
+| TennisCourtDetector | 33.97 | -- | 0.0% | 7.1% | 35.1% |
+| **BirdsCourt (Ours), Test** | **3.23** | **3.03** | **91.3%** | **95.7%** | **100.0%** |
+| **BirdsCourt (Ours), Train** | **3.58** | **2.44** | **91.8%** | **97.8%** | **99.5%** |
 
 Beats both the vanilla-MonoTrack and legacy-reranker baselines, using zero
 privileged information. "Legacy reranker" reads MonoTrack's own classical

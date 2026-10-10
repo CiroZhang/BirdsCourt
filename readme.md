@@ -130,6 +130,10 @@ scored dihedral-permutation-aware (best of the 4 valid relabelings of a
 left-right/near-far-symmetric court), matching `scripts/monotrack_test.py`'s
 own convention.
 
+| Original | MonoTrack | BirdsCourt (Ours) |
+|---|---|---|
+| ![original](Results/Pictures/original.jpg) | ![MonoTrack](Results/Pictures/Monotrack.jpg) | ![BirdsCourt](Results/Pictures/BirdsCourt.jpg) |
+
 **Court, 4 outer corners**
 
 | Method | Mean | @5px | @10px | @15px |

@@ -41,22 +41,14 @@ repo runs standalone with no training step required.
 
 ## Dataset
 
-`BirdsCourtData/` has three parts.
-
-**Train/** and **Test/** — 228 broadcast and amateur badminton photos, split
-into 182 train and 46 test (see `BirdsCourtData/split/`). Each folder has:
+`BirdsCourtData/` holds the 228 broadcast and amateur badminton photos used
+for training and evaluation, split into 182 train (`Train/`) and 46 test
+(`Test/`). Each has:
 - `Image/` — the source photo
 - `Annotation/` — hand-verified ground truth: 22 court-line points plus 4 net points
 - `Thumbnell/` — a small preview used by our annotation tool
 - `VGGT Outputs/` — a cached VGGT monocular-depth pass per image, so anyone
   without a GPU can still run net calibration with the VGGT hint
-
-**Synthetic Data/** — rendered court images with `Image/`, `Annotation/`, and
-`Mask/`, covering decoy surfaces, out-of-frame crops, perspective warps, and
-mirrored real photos. Ground truth is derived from the render parameters.
-
-**split/** — `train_test_split.json` (the split used for every reported
-number), `assign_split.py` (rebuilds Train/ and Test/ from a flat pool), and a README.
 
 ## Method
 
@@ -173,7 +165,7 @@ Beats MonoTrack's own classical score using zero privileged information.
   - `candidate_scorer.py`, `weights/candidate_scorer/` — the candidate scorer
   - `court_detection.py`, `net_detection.py`, `main.py` — the pipeline entry points
   - `scripts/monotrack_test.py` — vanilla MonoTrack eval
-- `BirdsCourtData/` — Train/, Test/, Synthetic Data/, split/
+- `BirdsCourtData/` — Train/, Test/
 - `Results/Pictures/` — qualitative comparison figures
 
 ## Reproducing the reported numbers

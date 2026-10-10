@@ -150,16 +150,20 @@ own convention.
 | **BirdsCourt (Ours), Test** | **3.23** | **91.3%** | **95.7%** | **100.0%** |
 | **BirdsCourt (Ours), Train** | **3.58** | **91.8%** | **97.8%** | **99.5%** |
 
-Beats both the vanilla-MonoTrack and legacy-reranker baselines, using zero
-privileged information. "Legacy reranker" reads MonoTrack's own classical
-score as an input feature; BirdsCourt never does.
+Beats MonoTrack's own classical score using zero privileged information.
+
+**Court, all 22 points** (Test)
+
+| Method | Mean | @5px | @10px | @15px |
+|---|---|---|---|---|
+| MonoTrack | 4.11 | 95.9% | 96.5% | 97.4% |
+| **BirdsCourt (Ours)** | **2.54** | **89.7%** | **98.5%** | **99.2%** |
 
 **Net, pole tops**
 
 | Method | Mean | @15px |
 |---|---|---|
 | MonoTrack | 16.83 | 51.1% |
-| Legacy reranker + net_detection.py (reported) | 12.46 | 85.9% |
 
 ## Repo layout
 

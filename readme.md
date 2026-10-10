@@ -164,7 +164,7 @@ Beats MonoTrack's own classical score using zero privileged information.
 | Method | Mean | @5px | @10px | @15px |
 |---|---|---|---|---|
 | MonoTrack | 16.83 | 40.2% | 45.7% | 51.1% |
-| MonoTrack's court + our projection | 12.31 | 45.7% | 78.3% | 87.0% |
+| MonoTrack's court + our projection | 12.31 | 41.7% | 78.3% | 87.0% |
 | **BirdsCourt (Ours)** | **11.08** | **42.4%** | **82.6%** | **89.1%** |
 
 ## Repo layout

@@ -150,8 +150,7 @@ own convention.
 | CourtKeyNet (finetuned) | 8.53 | 52.2% | 84.8% | 89.1% |
 | CourtKeyNet (base) | 39.86 | 0.0% | 0.0% | 15.2% |
 | TennisCourtDetector | 33.97 | 0.0% | 7.1% | 35.1% |
-| **BirdsCourt (candidate_scorer.py), Test** | **2.86** | **91.3%** | **95.7%** | **100.0%** |
-| BirdsCourt, Train (182) | 3.24 | 91.8% | 97.8% | 99.5% |
+| **BirdsCourt (Ours), Test** | **2.86** | **91.3%** | **95.7%** | **100.0%** |
 
 Beats both the vanilla-MonoTrack and legacy-reranker baselines, using zero
 privileged information. "Legacy reranker" reads MonoTrack's own classical

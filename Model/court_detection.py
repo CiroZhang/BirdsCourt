@@ -12,13 +12,9 @@ in monotrack_line_detection/src/main.cpp), then either:
     pixel/geometry CNN) and picks the best by their fixed-weight combo --
     the current, recommended method. Reaches 100% Test / 99.5% Train
     pool-top-1 accuracy (<15px), beating vanilla MonoTrack (93.5%) and the
-    older MonoTrack-score-reliant reranker (97.8%) -- see RESULTS.md.
+    older MonoTrack-score-reliant reranker (97.8%) -- see ../readme.md.
     Never reuses MonoTrack's own classical score as an input signal,
     anywhere in the computation.
-
-An older, MonoTrack-score-reliant reranker (`legacy_reranker/`) is kept
-for reference but is no longer the default -- see
-`legacy_reranker/README.md` for why it was superseded.
 
 Net-pole position is NOT part of this module's output (MonoTrack's own net
 detection is unreliable by design -- see net_detection.py, which reprojects
@@ -115,7 +111,7 @@ def detect(image_path, use_scorer="auto"):
     scorer_weights_dir = os.path.join(HERE, "weights", "candidate_scorer")
     have_scorer_weights = all(
         os.path.exists(os.path.join(scorer_weights_dir, f))
-        for f in ("clf_c.pkl", "clf_d.pkl", "geometry_cnn_best.pt")
+        for f in ("edge_scorer.pkl", "orientation_scorer.pkl", "pixel_scorer.pt")
     )
     want_scorer = use_scorer is True or (use_scorer == "auto" and have_scorer_weights)
     if use_scorer is True and not have_scorer_weights:

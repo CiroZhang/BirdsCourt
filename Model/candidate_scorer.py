@@ -3,31 +3,31 @@ out of MonoTrack's own uncapped candidate pool using THREE independently-
 trained scorers, each reading only real image evidence -- never MonoTrack's
 own classical score, directly or indirectly.
 
-  - Scorer C (edge alignment): classical Canny edge map + per-line
+  - EdgeScorer (edge alignment): classical Canny edge map + per-line
     hit-fraction against it, 12 features (one per real court line
     segment), logistic regression head.
-  - Scorer D (orientation alignment): local image-gradient ORIENTATION at
-    sampled points along each line, checked against the line's own
-    expected direction -- catches false edges that merely happen to be
-    nearby but don't run the right way. Same 12-segment structure,
-    logistic regression head.
-  - Scorer F (pixel/geometry CNN): a small conv net over (image + rendered
-    line mask), trained end to end as a single logistic-regression-style
-    binary classifier (correct/incorrect vs ground truth).
+  - OrientationScorer (orientation alignment): local image-gradient
+    ORIENTATION at sampled points along each line, checked against the
+    line's own expected direction -- catches false edges that merely
+    happen to be nearby but don't run the right way. Same 12-segment
+    structure, logistic regression head.
+  - PixelScorer (pixel/geometry CNN): a small conv net over (image +
+    rendered line mask), trained end to end as a single logistic-
+    regression-style binary classifier (correct/incorrect vs ground truth).
 
 Final score = fixed weighted combination (weights chosen via differential
-evolution on Train only, see the project writeup): 0.095*C + 0.218*D +
-0.836*F (each scorer's own logit passed through its own sigmoid first).
+evolution on Train only): 0.095*EdgeScorer + 0.218*OrientationScorer +
+0.836*PixelScorer (each scorer's own logit passed through its own sigmoid
+first).
 
 Scored under the project's dihedral-permutation-aware corner metric (same
 convention as scripts/monotrack_test.py), this combo alone reaches 100%
 Test / 99.5% Train pool-top-1 accuracy (<15px mean 4-corner error) --
-beating vanilla MonoTrack's own classical score (93.5%/6.79px mean) and the
-older reranker that's allowed to read MonoTrack's score as an input
+beating vanilla MonoTrack's own classical score (93.5%/6.79px mean) and an
+earlier reranker that was allowed to read MonoTrack's score as an input
 feature (97.8%/5.96px mean). No hand-tuned consensus/tolerance heuristic
 is needed for this result; the plain combo already achieves it, so that's
-what this module implements. See OVERNIGHT_SUMMARY_2026-10-09.md's "MAJOR
-CORRECTION" section for the full derivation and ablations.
+what this module implements. See ../readme.md for full results.
 """
 import os
 import pickle
@@ -54,12 +54,13 @@ LINE_SEGMENTS = [
     ("P17_singlesFarL", "P18_singlesFarR"), ("P19_singlesNearL", "P20_singlesNearR"),
 ]
 
-BEST_W = (0.095, 0.218, 0.836)  # (C, D, F) combo weights
+# (EdgeScorer, OrientationScorer, PixelScorer) combo weights
+BEST_W = (0.095, 0.218, 0.836)
 
 N_SAMPLES = 15
 _TS = np.linspace(0.08, 0.92, N_SAMPLES)
-C_TOL_PX = 5.0
-D_ANG_TOL = 20 * np.pi / 180
+EDGE_TOL_PX = 5.0
+ORIENTATION_ANG_TOL = 20 * np.pi / 180
 CNN_IMG_SIZE = 224
 
 
@@ -67,7 +68,7 @@ def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-np.clip(x, -30, 30)))
 
 
-# ---------------------------------------------------------------- Scorer C
+# ------------------------------------------------------------- EdgeScorer
 def _edge_dist_map(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(gray, 50, 150)
@@ -88,11 +89,11 @@ def _edge_features(candidates, w, h, dist_map):
         valid = (xi >= 0) & (xi < w) & (yi >= 0) & (yi < h)
         xi_c, yi_c = np.clip(xi, 0, w - 1), np.clip(yi, 0, h - 1)
         d = dist_map[yi_c, xi_c]
-        feats[:, si] = (valid & (d <= C_TOL_PX)).mean(axis=1)
+        feats[:, si] = (valid & (d <= EDGE_TOL_PX)).mean(axis=1)
     return feats
 
 
-# ---------------------------------------------------------------- Scorer D
+# ------------------------------------------------------- OrientationScorer
 def _gradient_maps(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -122,13 +123,13 @@ def _orientation_features(candidates, w, h, ang_map, mag_map, mag_thresh):
         local_mag = mag_map[yi_c, xi_c]
         perp_ang = line_ang[:, None] + np.pi / 2
         diff = np.abs(((local_ang - perp_ang + np.pi / 2) % np.pi) - np.pi / 2)
-        aligned = valid & (diff < D_ANG_TOL) & (local_mag > mag_thresh)
+        aligned = valid & (diff < ORIENTATION_ANG_TOL) & (local_mag > mag_thresh)
         feats[:, si] = aligned.mean(axis=1)
     return feats
 
 
-# ---------------------------------------------------------------- Scorer F
-class SmallGeometryCNN(nn.Module):
+# ------------------------------------------------------------- PixelScorer
+class PixelScorerCNN(nn.Module):
     def __init__(self):
         super().__init__()
         self.features = nn.Sequential(
@@ -145,7 +146,7 @@ class SmallGeometryCNN(nn.Module):
         return self.classifier(h).squeeze(-1)
 
 
-def _cnn_scores(candidates, img, model, device, batch_size=256):
+def _pixel_scores(candidates, img, model, device, batch_size=256):
     h, w = img.shape[:2]
     img_r = cv2.resize(img, (CNN_IMG_SIZE, CNN_IMG_SIZE)).astype(np.float32) / 255.0
     scores = np.zeros(len(candidates), dtype=np.float32)
@@ -169,28 +170,28 @@ def _cnn_scores(candidates, img, model, device, batch_size=256):
     return scores
 
 
-# ---------------------------------------------------------------- top-level
-_clf_c = None
-_clf_d = None
-_cnn_model = None
+# --------------------------------------------------------------- top-level
+_edge_clf = None
+_orientation_clf = None
+_pixel_model = None
 _device = None
 
 
 def _load():
-    global _clf_c, _clf_d, _cnn_model, _device
-    if _clf_c is None:
-        with open(os.path.join(WEIGHTS_DIR, "clf_c.pkl"), "rb") as fh:
-            _clf_c = pickle.load(fh)
-    if _clf_d is None:
-        with open(os.path.join(WEIGHTS_DIR, "clf_d.pkl"), "rb") as fh:
-            _clf_d = pickle.load(fh)
-    if _cnn_model is None:
+    global _edge_clf, _orientation_clf, _pixel_model, _device
+    if _edge_clf is None:
+        with open(os.path.join(WEIGHTS_DIR, "edge_scorer.pkl"), "rb") as fh:
+            _edge_clf = pickle.load(fh)
+    if _orientation_clf is None:
+        with open(os.path.join(WEIGHTS_DIR, "orientation_scorer.pkl"), "rb") as fh:
+            _orientation_clf = pickle.load(fh)
+    if _pixel_model is None:
         _device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        _cnn_model = SmallGeometryCNN().to(_device)
-        _cnn_model.load_state_dict(torch.load(os.path.join(WEIGHTS_DIR, "geometry_cnn_best.pt"),
-                                               map_location=_device, weights_only=True))
-        _cnn_model.eval()
-    return _clf_c, _clf_d, _cnn_model, _device
+        _pixel_model = PixelScorerCNN().to(_device)
+        _pixel_model.load_state_dict(torch.load(os.path.join(WEIGHTS_DIR, "pixel_scorer.pt"),
+                                                 map_location=_device, weights_only=True))
+        _pixel_model.eval()
+    return _edge_clf, _orientation_clf, _pixel_model, _device
 
 
 def score_candidates(image_path, candidates):
@@ -201,28 +202,28 @@ def score_candidates(image_path, candidates):
     NOT probabilities, just the fixed weighted sum of 3 sigmoid scores)."""
     if not candidates:
         return np.zeros(0, dtype=np.float32)
-    clf_c, clf_d, cnn_model, device = _load()
+    edge_clf, orientation_clf, pixel_model, device = _load()
     img = cv2.imread(image_path)
     h, w = img.shape[:2]
 
     dist_map = _edge_dist_map(img)
-    c_feat = _edge_features(candidates, w, h, dist_map)
-    c_score = sigmoid(clf_c.decision_function(c_feat))
+    edge_feat = _edge_features(candidates, w, h, dist_map)
+    edge_score = sigmoid(edge_clf.decision_function(edge_feat))
 
     ang, mag, mag_thresh = _gradient_maps(img)
-    d_feat = _orientation_features(candidates, w, h, ang, mag, mag_thresh)
-    d_score = sigmoid(clf_d.decision_function(d_feat))
+    orientation_feat = _orientation_features(candidates, w, h, ang, mag, mag_thresh)
+    orientation_score = sigmoid(orientation_clf.decision_function(orientation_feat))
 
-    f_logits = _cnn_scores(candidates, img, cnn_model, device)
-    f_score = sigmoid(f_logits)
+    pixel_logits = _pixel_scores(candidates, img, pixel_model, device)
+    pixel_score = sigmoid(pixel_logits)
 
-    wc, wd, wf = BEST_W
-    return wc * c_score + wd * d_score + wf * f_score
+    w_edge, w_orientation, w_pixel = BEST_W
+    return w_edge * edge_score + w_orientation * orientation_score + w_pixel * pixel_score
 
 
 def pick_best(image_path, candidates):
-    """Returns the single best candidate dict (argmax combo score) -- drop-in
-    replacement for reranker.rerank_candidates(), with zero reuse of
-    MonoTrack's own classical score anywhere in the computation."""
+    """Returns the single best candidate dict (argmax combo score), with
+    zero reuse of MonoTrack's own classical score anywhere in the
+    computation."""
     scores = score_candidates(image_path, candidates)
     return candidates[int(np.argmax(scores))]

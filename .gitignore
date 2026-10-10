@@ -37,3 +37,6 @@ __pycache__/
 # Logs / local scratch
 *.log
 .ipynb_checkpoints
+
+# Local-only scratch notes for paper writing, not part of the shipped repo
+paper_notes.md

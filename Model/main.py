@@ -3,7 +3,7 @@
     python3 main.py path/to/photo.jpg
     python3 main.py path/to/photo.jpg --overlay out.jpg --no-vggt
 
-Pipeline (see RESULTS.md for validated accuracy numbers):
+Pipeline (see ../readme.md for validated accuracy numbers):
   1. court_detection.py  -- MonoTrack uncapped candidate generation, scored
      by candidate_scorer.py's three independent scorers (if weights/ is
      present) -- never reuses MonoTrack's own classical score.

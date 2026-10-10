@@ -1,15 +1,24 @@
 """Court corner (and full 22-point court-line) detection for a single
-badminton broadcast/amateur photo. Wraps the compiled net-free MonoTrack
-binary (monotrack_line_detection/, build it first with
-monotrack_line_detection/build.sh) for candidate generation, then either:
+badminton broadcast/amateur photo. Wraps the compiled MonoTrack binary
+(monotrack_line_detection/, build it first with
+monotrack_line_detection/build.sh) for UNCAPPED candidate generation
+(every candidate that passes the basic validity gate -- see the comment
+in monotrack_line_detection/src/main.cpp), then either:
 
   - picks the classical top candidate (zero-downside vs. the original
-    net-scored MonoTrack -- see the paper's Table 1/2), or
-  - reranks the full candidate pool with the trained model in weights/, if
-    present -- helps specifically on hard/adversarial inputs (occlusion,
-    partial frame, decoys); see the paper's hard-case table. On typical
-    unobstructed real photos the classical pick is usually already correct,
-    so the reranker mostly matters when you expect difficult input.
+    net-scored MonoTrack), or
+  - scores the full candidate pool with honest_scorer.py's three
+    independently-trained scorers (edge alignment, gradient orientation,
+    pixel/geometry CNN) and picks the best by their fixed-weight combo --
+    the current, recommended method. Reaches 100% Test / 99.5% Train
+    pool-top-1 accuracy (<15px), beating vanilla MonoTrack (93.5%) and the
+    older MonoTrack-score-reliant reranker (97.8%) -- see RESULTS.md.
+    Never reuses MonoTrack's own classical score as an input signal,
+    anywhere in the computation.
+
+An older, MonoTrack-score-reliant reranker (`legacy_reranker/`) is kept
+for reference but is no longer the default -- see
+`legacy_reranker/README.md` for why it was superseded.
 
 Net-pole position is NOT part of this module's output (MonoTrack's own net
 detection is unreliable by design -- see net_detection.py, which reprojects
@@ -94,33 +103,37 @@ def _run_detect(image_path, work_dir, dump_candidates=False):
     return winner, candidates
 
 
-def detect(image_path, use_reranker="auto"):
+def detect(image_path, use_scorer="auto"):
     """Returns a dict of {point_name: (x, y)} for the 22 court-line points
     (see POINT_NAMES) -- no net points, see net_detection.py for that.
 
-    use_reranker: "auto" (use it if weights/ has a trained checkpoint, else
-    fall back to classical), True (require it, raise if weights missing),
-    False (always classical, even if weights are present)."""
+    use_scorer: "auto" (use honest_scorer.py if its weights/ are present,
+    else fall back to classical), True (require it, raise if weights
+    missing), False (always classical, even if weights are present)."""
     _check_binary()
 
-    reranker_path = os.path.join(WEIGHTS_DIR, "reranker_model.pt")
-    want_reranker = use_reranker is True or (use_reranker == "auto" and os.path.exists(reranker_path))
-    if use_reranker is True and not os.path.exists(reranker_path):
-        raise RuntimeError(f"use_reranker=True but no checkpoint at {reranker_path}")
+    scorer_weights_dir = os.path.join(HERE, "weights", "honest_scorer")
+    have_scorer_weights = all(
+        os.path.exists(os.path.join(scorer_weights_dir, f))
+        for f in ("clf_c.pkl", "clf_d.pkl", "geometry_cnn_best.pt")
+    )
+    want_scorer = use_scorer is True or (use_scorer == "auto" and have_scorer_weights)
+    if use_scorer is True and not have_scorer_weights:
+        raise RuntimeError(f"use_scorer=True but weights missing from {scorer_weights_dir}")
 
     work_dir = tempfile.mkdtemp(prefix="court_detection_")
     try:
-        winner, candidates = _run_detect(image_path, work_dir, dump_candidates=want_reranker)
-        if not want_reranker or not candidates or len(candidates) < 2:
+        winner, candidates = _run_detect(image_path, work_dir, dump_candidates=want_scorer)
+        if not want_scorer or not candidates or len(candidates) < 2:
             return winner
 
-        from reranker import rerank_candidates
-        return rerank_candidates(image_path, candidates, reranker_path)
+        import honest_scorer
+        return honest_scorer.pick_best(image_path, candidates)
     finally:
         shutil.rmtree(work_dir, ignore_errors=True)
 
 
-def detect_corners(image_path, use_reranker="auto"):
+def detect_corners(image_path, use_scorer="auto"):
     """Convenience wrapper: just the 4 outer corners, in TL,TR,BR,BL order."""
-    points = detect(image_path, use_reranker=use_reranker)
+    points = detect(image_path, use_scorer=use_scorer)
     return [points[c] for c in CORNERS]

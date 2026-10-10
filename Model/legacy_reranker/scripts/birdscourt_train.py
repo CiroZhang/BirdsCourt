@@ -23,12 +23,15 @@ from sklearn.decomposition import PCA
 random.seed(0)
 torch.manual_seed(0)
 
-REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# NOTE: path depth updated after this script moved from Model/scripts/ to
+# Model/legacy_reranker/scripts/ when the reranker was superseded by
+# ../../honest_scorer.py -- one more dirname() than the original version.
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 ORIGINAL_PATH = "/scratch/ciro/real_hard_batch/reranker_traindata_v5.jsonl"
 HARD_PATH = "/scratch/ciro/real_hard_batch/traindata_hard_v5.jsonl"
 SPLIT_PATH = os.path.join(REPO, "BirdsCourtData", "split", "train_test_split.json")
-OUT_MODEL = os.path.join(REPO, "Model", "weights", "reranker_model.pt")
-OUT_PCA = os.path.join(REPO, "Model", "weights", "pca_artifacts.npz")
+OUT_MODEL = os.path.join(REPO, "Model", "legacy_reranker", "weights", "reranker_model.pt")
+OUT_PCA = os.path.join(REPO, "Model", "legacy_reranker", "weights", "pca_artifacts.npz")
 
 CONTEXT_DIM = 12
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")

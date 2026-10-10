@@ -1,18 +1,28 @@
-# Reproducing the reported results
+# Reproducing the reported results (legacy reranker)
+
+**Superseded -- see `RESULTS.md` for the current, recommended method and
+numbers.** This file documents the older reranker-based pipeline (now in
+`legacy_reranker/`), kept for archival reproducibility of its reported
+numbers. It uses MonoTrack's own classical score as an input feature;
+the current method (`honest_scorer.py`) doesn't, and scores higher.
 
 ## Layout
 
     BirdsCourt/
       Model/                       pipeline code and weights
-        court_detection.py         court corners (MonoTrack + reranker)
+        court_detection.py         court corners (MonoTrack + honest_scorer)
+        honest_scorer.py           CURRENT candidate scorer -- see ../RESULTS.md
         net_detection.py           net poles via camera calibration
-        reranker.py                learned candidate reranker
         vggt_features.py           cached VGGT focal/planarity features
         camera_calibration.py      pinhole camera fit (inside monotrack_line_detection/)
-        weights/                   reranker_model.pt, pca_artifacts.npz
+        weights/honest_scorer/     current scorer's weights
+        legacy_reranker/           superseded reranker (uses MonoTrack's own score)
+          reranker.py                learned candidate reranker
+          weights/                   reranker_model.pt, pca_artifacts.npz
+          scripts/
+            birdscourt_train.py      train the reranker on Train only
+            birdscourt_test.py       full pipeline on Test only
         scripts/
-          birdscourt_train.py      train the reranker on Train only
-          birdscourt_test.py       full pipeline on Test only
           monotrack_test.py        vanilla MonoTrack on Test only
       BirdsCourtData/
         Train/                     182 photos: Image, Annotation, Thumbnell, VGGT Outputs
@@ -29,16 +39,18 @@
 
 ## 1. Train the reranker (Train only)
 
-    python3 scripts/birdscourt_train.py
+    python3 legacy_reranker/scripts/birdscourt_train.py
 
 Reads `BirdsCourtData/split/train_test_split.json` and the two training jsonls
 (context_feat + template_alignment precomputed per candidate). Writes
-`weights/reranker_model.pt` and `weights/pca_artifacts.npz`.
+`legacy_reranker/weights/reranker_model.pt` and `legacy_reranker/weights/pca_artifacts.npz`.
+(Paths inside these scripts still assume their old location -- see
+`legacy_reranker/README.md`.)
 
 ## 2. Evaluate (Test only, 46 photos)
 
-    python3 scripts/monotrack_test.py     # vanilla MonoTrack, net-included build
-    python3 scripts/birdscourt_test.py    # full pipeline (reranker + net calibration)
+    python3 scripts/monotrack_test.py              # vanilla MonoTrack, net-included build
+    python3 legacy_reranker/scripts/birdscourt_test.py    # legacy full pipeline (reranker + net calibration)
 
 Each script writes per-photo results to `Results/`.
 

@@ -7,8 +7,13 @@ import sys
 import time
 from multiprocessing import Pool
 
-REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# NOTE: path depth updated after this script moved from Model/scripts/ to
+# Model/legacy_reranker/scripts/ when the reranker was superseded by
+# ../../honest_scorer.py -- one more dirname() than the original version.
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 MODEL_DIR = os.path.join(REPO, "Model")
+LEGACY_DIR = os.path.join(MODEL_DIR, "legacy_reranker")
+RERANKER_WEIGHTS = os.path.join(LEGACY_DIR, "weights", "reranker_model.pt")
 TEST_DIR = os.path.join(REPO, "BirdsCourtData", "Test")
 IMG_DIR = os.path.join(TEST_DIR, "Image")
 ANN_DIR = os.path.join(TEST_DIR, "Annotation")
@@ -45,8 +50,10 @@ def process_one(fname):
     os.environ["PYTHONPATH"] = OPENCV_PYPATH + ":" + os.environ.get("PYTHONPATH", "")
     sys.path.insert(0, OPENCV_PYPATH)
     sys.path.insert(0, MODEL_DIR)
+    sys.path.insert(0, LEGACY_DIR)
     import court_detection
     import vggt_features
+    from reranker import rerank_candidates
     from monotrack_line_detection.camera_calibration import court_detection as CourtDetectionCalib
     import cv2
 
@@ -62,10 +69,20 @@ def process_one(fname):
         im = cv2.imread(img_path)
         h, w = im.shape[:2]
 
-        classical_pts = court_detection.detect(img_path, use_reranker=False)
+        classical_pts = court_detection.detect(img_path, use_scorer=False)
         result["classical_corner_err"] = best_perm_corner_err(classical_pts, gt)
 
-        full_pts = court_detection.detect(img_path, use_reranker=True)
+        # Specifically the OLD reranker (not honest_scorer.py, which is now
+        # court_detection.detect()'s default) -- this script's whole point
+        # is reproducing the legacy reranker's own reported numbers.
+        import shutil
+        import tempfile
+        work_dir_candidates = tempfile.mkdtemp(prefix="birdscourt_test_")
+        try:
+            _, candidates = court_detection._run_detect(img_path, work_dir_candidates, dump_candidates=True)
+            full_pts = rerank_candidates(img_path, candidates, RERANKER_WEIGHTS) if candidates and len(candidates) >= 2 else classical_pts
+        finally:
+            shutil.rmtree(work_dir_candidates, ignore_errors=True)
         result["full_corner_err"] = best_perm_corner_err(full_pts, gt)
 
         cd = CourtDetectionCalib(width=w, height=h)

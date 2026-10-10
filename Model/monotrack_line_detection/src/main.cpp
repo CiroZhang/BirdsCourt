@@ -90,20 +90,17 @@ int main(int argc, char** argv)
       std::string candidatesDir(argv[4]);
       mkdir(candidatesDir.c_str(), 0755);
 
-      // The search (especially its "random mode" fallback) evaluates
-      // thousands of line-pair combinations per image, most of them nowhere
-      // close to plausible. A re-ranker only needs the handful that actually
-      // looked reasonable, so keep just the top-K by COURT score alone --
-      // net is excluded from this ranking entirely (see TennisCourtFitter.h),
-      // so a genuinely good court fit is never crowded out of the pool just
-      // because fitNet() would have failed to find a net.
-      const size_t TOP_K = 30;
-      auto candidates = tennisCourtFitter.allCandidates;  // copy, sort doesn't disturb the original
-      std::sort(candidates.begin(), candidates.end(),
-                [](const TennisCourtFitter::Candidate& a, const TennisCourtFitter::Candidate& b) {
-                  return a.score > b.score;
-                });
-      size_t keep = std::min(TOP_K, candidates.size());
+      // UNCAPPED: dump every candidate that passed the basic validity gate,
+      // not just the top-K by MonoTrack's own classical score. An earlier
+      // version of this file capped at the top 30 by COURT score here,
+      // which (a) silently reintroduces MonoTrack's own score as a
+      // pre-filter before any of our from-scratch scorers ever see the
+      // pool, and (b) throws away the vast majority of genuinely different
+      // candidates (pools routinely contain 1,000-20,000+ after the basic
+      // gate). honest_scorer.py's scorers need the full, unfiltered pool
+      // to pick from -- see OVERNIGHT_SUMMARY_2026-10-09.md.
+      auto candidates = tennisCourtFitter.allCandidates;  // copy, kept in natural (generation) order
+      size_t keep = candidates.size();
 
       std::ofstream scoresCsv(candidatesDir + "/scores.csv");
       scoresCsv << "idx,score\n";

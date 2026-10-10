@@ -3,9 +3,10 @@
     python3 main.py path/to/photo.jpg
     python3 main.py path/to/photo.jpg --overlay out.jpg --no-vggt
 
-Pipeline (see the paper for validated accuracy numbers):
-  1. court_detection.py  -- MonoTrack candidate generation + net-free
-     classical selection (reranked on hard inputs if weights/ is present).
+Pipeline (see RESULTS.md for validated accuracy numbers):
+  1. court_detection.py  -- MonoTrack uncapped candidate generation, scored
+     by honest_scorer.py's three independent scorers (if weights/ is
+     present) -- never reuses MonoTrack's own classical score.
   2. net_detection.py    -- reprojects net position from a camera calibrated
      off the court points above (VGGT-assisted if available), instead of
      trusting MonoTrack's own unreliable net-pixel detection.
@@ -25,7 +26,7 @@ import court_detection
 import net_detection
 
 
-def run(image_path, use_reranker="auto", use_vggt_hint=True):
+def run(image_path, use_scorer="auto", use_vggt_hint=True):
     """Returns {point_name: (x, y)} for all 22 court-line points + the 4
     net points (P15_netL, P16_netR, poleL_top, poleR_top) -- 26 total."""
     img = cv2.imread(image_path)
@@ -33,7 +34,7 @@ def run(image_path, use_reranker="auto", use_vggt_hint=True):
         raise ValueError(f"couldn't read image: {image_path}")
     h, w = img.shape[:2]
 
-    court_points = court_detection.detect(image_path, use_reranker=use_reranker)
+    court_points = court_detection.detect(image_path, use_scorer=use_scorer)
     net_points = net_detection.detect_net(image_path, court_points, w, h, use_vggt_hint=use_vggt_hint)
 
     return {**court_points, **net_points}
@@ -51,13 +52,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("image", help="path to a badminton court photo")
     parser.add_argument("--overlay", help="also save a dot-overlay visualization to this path")
-    parser.add_argument("--no-reranker", action="store_true", help="skip the learned reranker even if weights/ has a checkpoint")
+    parser.add_argument("--no-scorer", action="store_true", help="skip honest_scorer.py even if its weights are present (classical pick only)")
     parser.add_argument("--no-vggt", action="store_true", help="skip the VGGT focal hint for net position (classical-only calibration)")
     args = parser.parse_args()
 
     points = run(
         args.image,
-        use_reranker=False if args.no_reranker else "auto",
+        use_scorer=False if args.no_scorer else "auto",
         use_vggt_hint=not args.no_vggt,
     )
     print(json.dumps({k: list(v) for k, v in points.items()}, indent=2))

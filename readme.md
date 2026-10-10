@@ -4,7 +4,12 @@ Court-line and net-position detection for a single badminton photo. Given one
 image, returns 22 court-line points plus 4 net points (two net-top endpoints,
 two pole tops) in pixel coordinates. This project introduces 3 contributions: 
 
-1. A learned reranker that improves Monotrack's court-line candidate selection. 
+1. A from-scratch candidate scorer (three independent scorers + a fixed
+   combination) that improves on MonoTrack's own court-line candidate
+   selection -- **without ever reusing MonoTrack's own classical score as
+   an input signal**, directly or indirectly. See `Model/RESULTS.md` for
+   the full numbers; an older reranker that did read MonoTrack's score is
+   kept for reference in `Model/legacy_reranker/`.
 2.  Net localization by geometric projection, avoiding unreliable direct net detection.
 3. The annotated real and synthetic data pipeline, which supports training and evaluation.
 
@@ -21,9 +26,10 @@ python3 main.py photo.jpg --overlay out.jpg
 
 VGGT itself isn't pip-installable, install it from source
 (https://github.com/facebookresearch/vggt) if you want live net-calibration
-hints on images not already covered by the cache in `BirdsCourtData/Real
-Data/VGGT Outputs/`. It needs a CUDA GPU. Without one, and without a cache
-hit, net detection still runs, just without the focal-length prior.
+hints on images not already covered by the cache in
+`BirdsCourtData/{Train,Test}/VGGT Outputs/`. It needs a CUDA GPU. Without
+one, and without a cache hit, net detection still runs, just without the
+focal-length prior.
 
 ```python
 import court_detection, net_detection
@@ -32,8 +38,8 @@ points = court_detection.detect("photo.jpg")          # 22 court-line points
 net = net_detection.detect_net("photo.jpg", points, img_w, img_h)  # 4 net points
 ```
 
-`Model/weights/` ships the trained reranker checkpoint, so the repo runs
-standalone with no training step required.
+`Model/weights/honest_scorer/` ships the trained scorer weights, so the
+repo runs standalone with no training step required.
 
 ## Dataset
 
@@ -56,11 +62,9 @@ number), `assign_split.py` (rebuilds Train/ and Test/ from a flat pool), and a R
 
 ## Method
 
-Four stages: generate candidates, score each one independently, rank them
-with a learned combiner, reproject the net. (This describes the pipeline
-as it's currently being built; the shipped checkpoint in `weights/` is the
-previous-generation reranker described further down until this is finished
-and swapped in.)
+Four stages: generate candidates, score each one independently, combine
+with fixed weights, reproject the net. This is exactly what's shipped in
+`weights/honest_scorer/` -- not a work in progress.
 
 ### 1. Candidate generation
 
@@ -95,20 +99,22 @@ candidate in the pool one confidence score:
   holistic confidence score directly from pixels, with no hand-picked
   sample points.
 
-### 3. Candidate ranking
+### 3. Candidate combination
 
-A learned combiner picks the final candidate. For every candidate it
-builds one feature vector from: the three scorers' own scores above, the 4
-outer-corner pixel positions (normalized by image size), and a compressed
-per-candidate image feature — the candidate is warped into a canonical
-top-down view via its own homography, embedded with a frozen ResNet-18
-(ImageNet weights), then reduced to a small number of dimensions. A
-sanity-check term is also planned, to catch degenerate/outlier candidates
-the scorers above don't reliably flag on their own — still in development,
-so left out of this description for now. A small MLP maps the combined
-vector to one final score per candidate, trained with a pairwise ranking
-loss (a candidate under 15px corner error should outscore one over), and
-the pool's top-scoring candidate is the pipeline's pick.
+Each scorer's own logit is passed through its own sigmoid, then combined
+with one fixed set of weights per candidate: `0.095*C + 0.218*D + 0.836*F`
+(chosen via differential evolution on `Train/` only). The pool's
+top-scoring candidate by this combo is the pipeline's pick.
+
+This deliberately isn't a learned combiner (MLP, embedding features,
+pairwise-ranking training, a hand-tuned agreement/consensus heuristic
+between the scorers' own top picks) -- every one of those was tried and
+compared honestly against this simple fixed combo, and none of them beat
+it; several (an MLP with a frozen-ResNet-18 candidate embedding among
+them) scored meaningfully worse. At 182 training photos, more flexibility
+consistently overfit. See `Model/RESULTS.md` for the ablation and
+`Model/OVERNIGHT_SUMMARY_2026-10-09.md` for the full set of rejected
+alternatives.
 
 ### 4. Net-position reprojection (`net_detection.py`, `camera_calibration.py`)
 
@@ -139,45 +145,51 @@ the pool's top-scoring candidate is the pipeline's pick.
 
 All numbers are on the 46-photo `Test/` set. BirdsCourt was trained on
 `Train/` only. Success = share of photos (or points) under the pixel
-threshold.
+threshold. Corner error is scored dihedral-permutation-aware (best of the
+4 valid relabelings of a left-right/near-far-symmetric court) -- the same
+convention `scripts/monotrack_test.py` itself uses; see `Model/RESULTS.md`
+for the full derivation, ablation, and the one known remaining miss.
 
 **Court, 4 outer corners**
 
 | Method | Mean | @5px | @10px | @15px |
 |---|---|---|---|---|
-| MonoTrack | 6.79 | 89.1% | 89.1% | 93.5% |
+| MonoTrack (its own classical score) | 6.79 | 89.1% | 89.1% | 93.5% |
+| Legacy reranker (reads MonoTrack's score as a feature) | 5.96 | 93.5% | 93.5% | 97.8% |
 | Hit-frame Court R-CNN | 23.44 | 84.8% | 93.5% | 93.5% |
 | CourtKeyNet (finetuned) | 8.53 | 52.2% | 84.8% | 89.1% |
 | CourtKeyNet (base) | 39.86 | 0.0% | 0.0% | 15.2% |
 | TennisCourtDetector | 33.97 | 0.0% | 7.1% | 35.1% |
-| **BirdsCourt** | **5.84** | **93.5%** | **93.5%** | **97.8%** |
+| **BirdsCourt (honest_scorer.py)** | **2.86** | **91.3%** | **95.7%** | **100.0%** |
 
-**Court, all 22 points** (only MonoTrack and BirdsCourt produce all 22;
-the other baselines output 4–6 points)
+**Net, pole tops**
 
-| Method | Mean | @5px | @10px | @15px |
-|---|---|---|---|---|
-| MonoTrack | 4.97 | 92.7% | 93.3% | 94.2% |
-| **BirdsCourt** | **4.34** | **95.9%** | **96.5%** | **97.4%** |
-
-**Net, pole tops** (92 points)
-
-| Method | Mean | @5px | @10px | @15px |
-|---|---|---|---|---|
-| MonoTrack | 16.83 | 40.2% | 45.7% | 51.1% |
-| **BirdsCourt** | **12.41** | **47.8%** | **77.2%** | **87.0%** |
+| Method | Mean | @15px |
+|---|---|---|
+| MonoTrack | 16.83 | 51.1% |
+| Legacy reranker + net_detection.py (reported) | 12.46 | 85.9% |
+| **BirdsCourt (honest_scorer.py court points + net_detection.py)** | *(see Model/RESULTS.md)* | *(see Model/RESULTS.md)* |
 
 The hit-frame row is noisy across reruns of its training (a repeat gave
 57.01 px mean and 87.0% @15px instead of 23.44 / 93.5%), so treat its exact
-numbers loosely. See `Model/REPRODUCE.md` for the commands.
+numbers loosely. The non-BirdsCourt/MonoTrack baseline rows above were not
+re-verified this round. See `Model/RESULTS.md` for the current method's
+full numbers (including the per-scorer ablation and the Train-set numbers)
+and `Model/REPRODUCE.md` for the legacy reranker's commands.
 
 ## Repo layout
 
-- `Model/` — pipeline code, weights, `scripts/` (train and eval), `REPRODUCE.md`
+- `Model/` — pipeline code and weights
+  - `honest_scorer.py`, `weights/honest_scorer/` — current candidate scorer
+  - `court_detection.py`, `net_detection.py`, `main.py` — the pipeline entry points
+  - `legacy_reranker/` — superseded MonoTrack-score-reliant reranker, kept for reference
+  - `scripts/`, `REPRODUCE.md` — legacy reranker's train/eval commands
+  - `RESULTS.md` — current method's full numbers
 - `BirdsCourtData/` — Train/, Test/, Synthetic Data/, split/
 - `Results/Pictures/` — qualitative comparison figures
 
 ## Reproducing the reported numbers
 
-`Model/REPRODUCE.md` has the exact commands and the results table. Training
+`Model/RESULTS.md` has the current method's numbers and derivation.
+`Model/REPRODUCE.md` has the legacy reranker's exact commands. Training
 uses only `Train/`. Every reported number is computed on `Test/`.

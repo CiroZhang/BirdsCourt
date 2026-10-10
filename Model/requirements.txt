@@ -1,6 +1,7 @@
 opencv-python>=4.5
 numpy
 scipy
+scikit-learn
 torch
 torchvision
 huggingface_hub

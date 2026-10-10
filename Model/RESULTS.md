@@ -32,9 +32,13 @@ method already built before the scoring bug was found.
 
 ## Net pole-top (requires camera calibration from the court points above)
 
+**Status: evaluation job still running on the cluster as of 2026-10-10 --
+this table has not been filled in yet.** (One image/minute or so, 46
+images total -- large candidate pools plus per-image RANSAC calibration.)
+
 | Method | Mean err | @15px |
 |---|---|---|
-| **Ours (honest_scorer.py court points -> net_detection.py), Test** | *(running)* | *(running)* |
+| **Ours (honest_scorer.py court points -> net_detection.py), Test** | not yet measured | not yet measured |
 | Old reranker + net_detection.py (reported) | 12.46px | 85.9% |
 
 ## Scorer ablation (Test, same corrected metric)

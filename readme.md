@@ -168,7 +168,11 @@ for the full derivation, ablation, and the one known remaining miss.
 |---|---|---|
 | MonoTrack | 16.83 | 51.1% |
 | Legacy reranker + net_detection.py (reported) | 12.46 | 85.9% |
-| **BirdsCourt (honest_scorer.py court points + net_detection.py)** | *(see Model/RESULTS.md)* | *(see Model/RESULTS.md)* |
+| **BirdsCourt (honest_scorer.py court points + net_detection.py)** | not yet measured | not yet measured |
+
+Net-pole re-evaluation under the new court points is running as of
+2026-10-10; this row is a placeholder until it finishes -- check
+`Model/RESULTS.md` then for the filled-in numbers.
 
 The hit-frame row is noisy across reruns of its training (a repeat gave
 57.01 px mean and 87.0% @15px instead of 23.44 / 93.5%), so treat its exact

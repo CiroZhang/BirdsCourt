@@ -56,6 +56,8 @@ Four stages: generate candidates, score each one independently, combine
 with fixed weights, reproject the net. This is exactly what's shipped in
 `weights/candidate_scorer/` -- not a work in progress.
 
+![pipeline architecture](Results/Pictures/pipeline_architecture.png)
+
 ### 1. Candidate generation
 
 MonoTrack's own classical pipeline still proposes court-line candidates:

@@ -172,11 +172,13 @@ Beats MonoTrack's own classical score using zero privileged information.
 - `BirdsCourtData/` — Train/, Test/
 - `Results/Pictures/` — qualitative comparison figures
 
-## Reproducing the reported numbers
+## References
 
-Training uses only `Train/`. Every reported number is computed on `Test/`.
-`scripts/monotrack_test.py` reproduces the vanilla-MonoTrack row; the
-BirdsCourt rows come from running `candidate_scorer.py` (via
-`court_detection.detect()`) over the uncapped candidate pool and scoring
-against `BirdsCourtData/Test/Annotation/` with the dihedral-permutation-aware
-metric described above.
+- **MonoTrack** — P. Liu & J.-H. Wang. "MonoTrack: Shuttle Trajectory
+  Reconstruction From Monocular Badminton Video." *CVPR Workshops (CVPRW)*, 2022.
+- **Hit-frame Court R-CNN** — Y.-H. Chien & F. Yu. "Automated Hit-frame
+  Detection for Badminton Match Analysis." arXiv:2307.16000, 2023.
+- **CourtKeyNet** — A. N. Raj & Prethija G. "CourtKeyNet: A novel octave-based
+  architecture for precision badminton court detection with geometric
+  constraints." *Machine Learning with Applications*, 2026.
+- **TennisCourtDetector** — [github.com/yastrebksv/TennisCourtDetector](https://github.com/yastrebksv/TennisCourtDetector)

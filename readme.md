@@ -150,12 +150,6 @@ own convention.
 
 Beats MonoTrack's own classical score using zero privileged information.
 
-**Court, all 22 points** (Test)
-
-| Method | Mean | @5px | @10px | @15px |
-|---|---|---|---|---|
-| MonoTrack | 4.11 | 95.9% | 96.5% | 97.4% |
-| **BirdsCourt (Ours)** | **2.54** | **89.7%** | **98.5%** | **99.2%** |
 
 **Net, pole tops**
 
